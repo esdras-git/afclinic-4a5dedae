@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import logoLumina from "@/assets/logo-lumina.jpg";
 
 const navLinks = [
   { label: "Serviços", href: "#servicos" },
@@ -25,8 +26,9 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-16 md:h-20">
-        <a href="#" className="font-heading text-xl md:text-2xl gold-text">
-          Lumina Clinic
+        <a href="#" className="flex items-center gap-3">
+          <img src={logoLumina} alt="Lumina Clinic" className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover" />
+          <span className="font-heading text-xl md:text-2xl gold-text">Lumina Clinic</span>
         </a>
 
         {/* Desktop */}
@@ -41,7 +43,7 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="https://wa.me/5585999999999"
+            href="https://wa.me/5585987144701"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-body font-semibold gold-gradient text-primary-foreground px-5 py-2 rounded-full transition-all hover:scale-105"
@@ -74,7 +76,7 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="https://wa.me/5585999999999"
+            href="https://wa.me/5585987144701"
             target="_blank"
             rel="noopener noreferrer"
             className="block text-center text-sm font-body font-semibold gold-gradient text-primary-foreground px-5 py-2 rounded-full"

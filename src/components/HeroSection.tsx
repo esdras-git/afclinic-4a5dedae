@@ -33,7 +33,7 @@ const HeroSection = () => {
 
         <div className="animate-fade-up-delay-3">
           <a
-            href="https://wa.me/5585999999999?text=Olá! Gostaria de agendar uma consulta na Lumina Clinic."
+            href="https://wa.me/5585987144701?text=Olá! Gostaria de agendar uma consulta na Lumina Clinic."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 gold-gradient text-primary-foreground font-body font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_hsla(40,50%,55%,0.3)]"
