@@ -1,4 +1,4 @@
-import heroImage from "@/assets/hero-clinic.jpg";
+import heroVideo from "@/assets/hero-video.mp4";
 import { MessageCircle } from "lucide-react";
 
 const HeroSection = () => {
@@ -6,9 +6,12 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Interior luxuoso da Lumina Clinic"
+        <video
+          src={heroVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
