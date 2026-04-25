@@ -1,35 +1,99 @@
-import { Instagram } from "lucide-react";
+import { Instagram, MapPin, Mail, Phone } from "lucide-react";
+import reception from "@/assets/clinic-reception.jpg";
+import room from "@/assets/clinic-room.jpg";
+import detail from "@/assets/clinic-detail.jpg";
+import afLogo from "@/assets/af-logo.png";
+import { whatsappUrl, WHATSAPP_NUMBER } from "@/lib/contact";
 
 const Footer = () => {
   return (
-    <footer className="py-12 border-t border-border">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="font-heading text-2xl gold-text">Lumina Clinic</h3>
-            <p className="text-muted-foreground text-sm mt-1">
-              Estética Avançada & Saúde Feminina
-            </p>
+    <footer id="contato" className="bg-background border-t border-border">
+      {/* Galeria de fotos da clínica */}
+      <div className="container mx-auto px-6 py-20">
+        <div className="grid md:grid-cols-3 gap-1">
+          {[reception, room, detail].map((src, i) => (
+            <div key={i} className="overflow-hidden aspect-[4/3] bg-cream-deep group">
+              <img
+                src={src}
+                alt={`Ambiente da clínica ${i + 1}`}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Contato e info */}
+      <div className="border-t border-border">
+        <div className="container mx-auto px-6 py-16">
+          <div className="grid md:grid-cols-4 gap-12">
+            {/* Marca */}
+            <div className="md:col-span-1">
+              <div className="flex items-center gap-3 mb-5">
+                <img src={afLogo} alt="" className="w-9 h-9 object-contain" />
+                <div className="leading-tight">
+                  <p className="font-heading text-base text-foreground">Arquitetura Facial</p>
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Clinic</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                O método exclusivo da Dra. Emanuele Melo para a construção da sua melhor versão.
+              </p>
+            </div>
+
+            {/* Contato */}
+            <div>
+              <p className="eyebrow mb-5">Contato</p>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                <li>
+                  <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-foreground transition-colors">
+                    <Phone className="w-4 h-4" strokeWidth={1.5} />
+                    +55 85 9871-4701
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:contato@arquiteturafacialclinic.com" className="flex items-center gap-3 hover:text-foreground transition-colors">
+                    <Mail className="w-4 h-4" strokeWidth={1.5} />
+                    contato@arquiteturafacialclinic.com
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Endereço */}
+            <div>
+              <p className="eyebrow mb-5">Endereço</p>
+              <div className="flex items-start gap-3 text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4 mt-0.5 shrink-0" strokeWidth={1.5} />
+                <p className="leading-relaxed">
+                  Complexo São Mateus<br />
+                  Av. Santos Dumont, 5753<br />
+                  Fortaleza – CE
+                </p>
+              </div>
+            </div>
+
+            {/* Social */}
+            <div>
+              <p className="eyebrow mb-5">Siga</p>
+              <a
+                href="https://instagram.com/arquiteturafacialclinic"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Instagram className="w-4 h-4" strokeWidth={1.5} />
+                @arquiteturafacialclinic
+              </a>
+            </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <a
-              href="https://instagram.com/lumina.cliinic"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-            >
-              <Instagram className="w-5 h-5" />
-              <span className="text-sm">@lumina.cliinic</span>
-            </a>
+          <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row gap-4 justify-between items-center text-xs text-muted-foreground">
+            <p>© {new Date().getFullYear()} Arquitetura Facial Clinic. Todos os direitos reservados.</p>
+            <p className="tracking-[0.2em] uppercase">Dra. Emanuele Melo</p>
           </div>
         </div>
-
-        <div className="section-divider my-8" />
-
-        <p className="text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Lumina Clinic. Todos os direitos reservados.
-        </p>
       </div>
     </footer>
   );
