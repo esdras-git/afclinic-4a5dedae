@@ -12,17 +12,26 @@ import {
 } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import { whatsappUrl } from "@/lib/contact";
+import imgLimpeza from "@/assets/svc-limpeza.jpg";
+import imgHydra from "@/assets/svc-hydragloss.jpg";
+import imgMicro from "@/assets/svc-microagulhamento.jpg";
+import imgBotox from "@/assets/svc-botox.jpg";
+import imgBio from "@/assets/svc-bioestimulador.jpg";
+import imgOto from "@/assets/svc-otomodelacao.jpg";
+import imgPreench from "@/assets/svc-preenchimento.jpg";
+import imgPerfilo from "@/assets/svc-perfiloplastia.jpg";
+import imgTec from "@/assets/svc-tecnologias.jpg";
 
 const services = [
-  { icon: Droplet, name: "Limpeza de Pele" },
-  { icon: Sparkles, name: "Hydragloss" },
-  { icon: Activity, name: "Microagulhamento" },
-  { icon: Syringe, name: "Botox" },
-  { icon: Layers, name: "Bioestimulador de Colágeno" },
-  { icon: Ear, name: "Otomodelação" },
-  { icon: Smile, name: "Preenchimentos Faciais" },
-  { icon: Aperture, name: "Perfiloplastia" },
-  { icon: Cpu, name: "Tecnologias" },
+  { icon: Droplet, name: "Limpeza de Pele", image: imgLimpeza },
+  { icon: Sparkles, name: "Hydragloss", image: imgHydra },
+  { icon: Activity, name: "Microagulhamento", image: imgMicro },
+  { icon: Syringe, name: "Botox", image: imgBotox },
+  { icon: Layers, name: "Bioestimulador de Colágeno", image: imgBio },
+  { icon: Ear, name: "Otomodelação", image: imgOto },
+  { icon: Smile, name: "Preenchimentos Faciais", image: imgPreench },
+  { icon: Aperture, name: "Perfiloplastia", image: imgPerfilo },
+  { icon: Cpu, name: "Tecnologias", image: imgTec },
 ];
 
 const ServicesSection = () => {
@@ -39,16 +48,29 @@ const ServicesSection = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border">
           {services.map((s, i) => (
             <ScrollReveal key={s.name} delay={i * 60}>
-              <div className="editorial-card !rounded-none !border-0 group bg-background h-full p-8 md:p-10 flex flex-col items-start gap-5 cursor-default">
-                <div className="w-12 h-12 flex items-center justify-center border border-foreground/15 group-hover:border-bronze group-hover:bg-bronze/5 transition-all">
-                  <s.icon className="w-5 h-5 text-foreground group-hover:text-bronze transition-colors" strokeWidth={1.4} />
+              <div className="group bg-background h-full flex flex-col cursor-default overflow-hidden">
+                <div className="relative overflow-hidden aspect-[4/3]">
+                  <img
+                    src={s.image}
+                    alt={s.name}
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                <h3 className="font-heading text-lg md:text-xl text-foreground leading-snug">
-                  {s.name}
-                </h3>
+                <div className="p-8 md:p-10 flex flex-col items-start gap-5">
+                  <div className="w-12 h-12 flex items-center justify-center border border-foreground/15 group-hover:border-bronze group-hover:bg-bronze/5 transition-all">
+                    <s.icon className="w-5 h-5 text-foreground group-hover:text-bronze transition-colors" strokeWidth={1.4} />
+                  </div>
+                  <h3 className="font-heading text-lg md:text-xl text-foreground leading-snug">
+                    {s.name}
+                  </h3>
+                </div>
               </div>
             </ScrollReveal>
           ))}
