@@ -1,13 +1,24 @@
-import heroImg from "@/assets/af-hero.jpg";
+import heroVideo from "@/assets/af-hero.mp4";
 import { ArrowRight } from "lucide-react";
 import { whatsappUrl } from "@/lib/contact";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-background pt-24">
-      <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-        {/* Text */}
-        <div className="relative z-10 max-w-xl">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-24 pb-16">
+      {/* Background video */}
+      <video
+        src={heroVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      {/* Overlay for legibility */}
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px]" />
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
           <div className="animate-fade-up">
             <span className="eyebrow">Arquitetura Facial Clinic</span>
           </div>
@@ -16,12 +27,12 @@ const HeroSection = () => {
             A beleza é uma <em className="italic font-normal bronze-text">Construção</em>.
           </h1>
 
-          <p className="font-body text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-md animate-fade-up-delay-2">
+          <p className="font-body text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-md mx-auto animate-fade-up-delay-2">
             Método exclusivo da Dra. Emanuele Melo para harmonia, equilíbrio e naturalidade —
             construído sob medida para cada rosto.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-up-delay-3">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up-delay-3">
             <a
               href={whatsappUrl("Olá! Vim pelo site e gostaria de agendar minha avaliação de Arquitetura Facial.")}
               target="_blank"
@@ -35,19 +46,6 @@ const HeroSection = () => {
               Ver Tratamentos
             </a>
           </div>
-        </div>
-
-        {/* Image */}
-        <div className="relative animate-fade-up-delay-2">
-          <div className="absolute -top-6 -left-6 w-24 h-24 border border-bronze/40" />
-          <div className="absolute -bottom-6 -right-6 w-24 h-24 border border-bronze/40" />
-          <img
-            src={heroImg}
-            alt="Ambiente luxuoso da Arquitetura Facial Clinic"
-            className="w-full h-[520px] md:h-[620px] object-cover relative"
-            width={1536}
-            height={1152}
-          />
         </div>
       </div>
     </section>
