@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Raleway:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,54 +6,57 @@
 
 @layer base {
   :root {
-    --background: 150 30% 8%;
-    --foreground: 40 20% 90%;
+    /* Light Luxury palette — AF Clinic */
+    --background: 30 25% 99%;            /* #FDFCFB off-white/cream */
+    --foreground: 0 0% 10%;              /* near-black body */
 
-    --card: 150 25% 12%;
-    --card-foreground: 40 20% 90%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
 
-    --popover: 150 25% 12%;
-    --popover-foreground: 40 20% 90%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 40 50% 55%;
-    --primary-foreground: 150 30% 8%;
+    --primary: 0 0% 0%;                  /* black — main CTA */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 150 20% 16%;
-    --secondary-foreground: 40 20% 90%;
+    --secondary: 30 20% 96%;
+    --secondary-foreground: 0 0% 18%;
 
-    --muted: 150 15% 18%;
-    --muted-foreground: 40 10% 60%;
+    --muted: 30 15% 94%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 150 35% 20%;
-    --accent-foreground: 40 50% 55%;
+    --accent: 33 38% 57%;                /* bronze accent */
+    --accent-foreground: 0 0% 10%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 150 15% 20%;
-    --input: 150 15% 20%;
-    --ring: 40 50% 55%;
+    --border: 30 12% 88%;
+    --input: 30 12% 88%;
+    --ring: 33 38% 57%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --gold: 40 50% 55%;
-    --gold-light: 40 45% 70%;
-    --gold-dark: 40 55% 40%;
-    --forest: 150 30% 10%;
-    --forest-light: 150 25% 16%;
-    --forest-deep: 150 35% 6%;
+    /* Brand tokens */
+    --bronze: 33 38% 57%;                /* #C5A059 */
+    --bronze-light: 33 45% 75%;
+    --bronze-dark: 33 40% 42%;
+    --ink: 0 0% 10%;                     /* near-black */
+    --ink-soft: 0 0% 18%;                /* #2D2D2D */
+    --cream: 30 25% 99%;
+    --cream-deep: 30 20% 96%;
 
-    --sidebar-background: 150 30% 8%;
-    --sidebar-foreground: 40 20% 90%;
-    --sidebar-primary: 40 50% 55%;
-    --sidebar-primary-foreground: 150 30% 8%;
-    --sidebar-accent: 150 25% 16%;
-    --sidebar-accent-foreground: 40 20% 90%;
-    --sidebar-border: 150 15% 20%;
-    --sidebar-ring: 40 50% 55%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 30 15% 94%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 30 12% 88%;
+    --sidebar-ring: 33 38% 57%;
 
     --font-heading: 'Playfair Display', serif;
-    --font-body: 'Raleway', sans-serif;
+    --font-body: 'Inter', sans-serif;
   }
 }
 
@@ -63,77 +66,77 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    @apply tracking-tight;
   }
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-card/40 backdrop-blur-xl border border-primary/10 rounded-2xl;
-    box-shadow: 0 8px 32px 0 hsla(150, 30%, 5%, 0.4);
+  .editorial-card {
+    @apply bg-card border border-border rounded-lg transition-all duration-500;
+  }
+  .editorial-card:hover {
+    border-color: hsl(var(--bronze) / 0.5);
+    box-shadow: 0 20px 40px -20px hsl(var(--ink) / 0.1);
   }
 
-  .gold-gradient {
-    background: linear-gradient(135deg, hsl(var(--gold-dark)), hsl(var(--gold)), hsl(var(--gold-light)));
+  .bronze-text {
+    color: hsl(var(--bronze));
   }
 
-  .gold-text {
-    background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .ink-divider {
+    @apply w-16 h-px;
+    background: hsl(var(--ink));
   }
 
-  .section-divider {
-    @apply w-24 h-px mx-auto;
-    background: linear-gradient(90deg, transparent, hsl(var(--gold)), transparent);
+  .bronze-divider {
+    @apply w-16 h-px;
+    background: hsl(var(--bronze));
+  }
+
+  .btn-primary-ink {
+    @apply inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-body font-medium px-8 py-4 rounded-sm tracking-wide uppercase text-xs transition-all duration-300;
+    letter-spacing: 0.18em;
+  }
+  .btn-primary-ink:hover {
+    background: hsl(var(--ink-soft));
+    box-shadow: inset 0 0 0 1px hsl(var(--bronze));
+  }
+
+  .btn-outline-ink {
+    @apply inline-flex items-center justify-center gap-2 bg-transparent text-foreground border border-foreground font-body font-medium px-8 py-4 rounded-sm tracking-wide uppercase text-xs transition-all duration-300;
+    letter-spacing: 0.18em;
+  }
+  .btn-outline-ink:hover {
+    @apply bg-foreground text-background;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-body uppercase tracking-[0.35em] bronze-text;
   }
 }
 
 @layer utilities {
   .animate-fade-up {
-    animation: fadeUp 0.8s ease-out forwards;
+    animation: fadeUp 0.9s ease-out forwards;
     opacity: 0;
   }
-
-  .animate-fade-up-delay-1 {
-    animation: fadeUp 0.8s ease-out 0.2s forwards;
-    opacity: 0;
-  }
-
-  .animate-fade-up-delay-2 {
-    animation: fadeUp 0.8s ease-out 0.4s forwards;
-    opacity: 0;
-  }
-
-  .animate-fade-up-delay-3 {
-    animation: fadeUp 0.8s ease-out 0.6s forwards;
-    opacity: 0;
-  }
+  .animate-fade-up-delay-1 { animation: fadeUp 0.9s ease-out 0.2s forwards; opacity: 0; }
+  .animate-fade-up-delay-2 { animation: fadeUp 0.9s ease-out 0.4s forwards; opacity: 0; }
+  .animate-fade-up-delay-3 { animation: fadeUp 0.9s ease-out 0.6s forwards; opacity: 0; }
 }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  50% { transform: translateY(-6px); }
 }
