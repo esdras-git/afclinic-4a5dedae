@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, Quote, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { whatsappUrl } from "@/lib/contact";
 
 const testimonials = [
   {
@@ -11,42 +12,42 @@ const testimonials = [
     initials: "MA",
     treatment: "Botox & Skinbooster",
     rating: 5,
-    text: "A Lumina transformou minha autoestima. O atendimento é impecável, sofisticado, e os resultados naturais superaram todas as minhas expectativas. Me sinto radiante.",
+    text: "A Dra. Emanuele transformou minha autoestima. O método de Arquitetura Facial entrega um resultado natural, elegante e fiel à minha essência.",
   },
   {
     name: "Carolina Vasconcelos",
     initials: "CV",
-    treatment: "Ultraformer III",
+    treatment: "Bioestimulador de Colágeno",
     rating: 5,
-    text: "Ambiente luxuoso e equipe extremamente preparada. Saí da clínica me sentindo cuidada em cada detalhe. O resultado do Ultraformer foi simplesmente incrível.",
+    text: "Ambiente impecável e atendimento que me fez sentir cuidada em cada detalhe. Saí com a sensação de que cada traço foi pensado com estratégia.",
   },
   {
     name: "Beatriz Mendonça",
     initials: "BM",
     treatment: "Microagulhamento",
     rating: 5,
-    text: "Profissionalismo e elegância em cada visita. Minha pele nunca esteve tão luminosa. Recomendo a Lumina de olhos fechados para quem busca excelência.",
+    text: "Profissionalismo e elegância em cada visita. A pele nunca esteve tão luminosa. Recomendo de olhos fechados a quem busca excelência.",
   },
   {
     name: "Renata Cavalcante",
     initials: "RC",
     treatment: "Preenchimento Labial",
     rating: 5,
-    text: "Procurei a Lumina por indicação e encontrei muito mais do que esperava. Discrição, cuidado e um resultado natural que me deixou encantada.",
+    text: "Discrição, cuidado e um resultado tão natural que parece sempre ter sido assim. Encontrei aqui muito mais do que esperava.",
   },
   {
     name: "Larissa Studart",
     initials: "LS",
-    treatment: "Bioestimulador",
+    treatment: "Perfiloplastia",
     rating: 5,
-    text: "Cada detalhe da clínica respira luxo e bem-estar. Me senti acolhida desde o primeiro instante e o resultado do tratamento foi maravilhoso.",
+    text: "Cada detalhe da clínica respira luxo e bem-estar. Resultado lindíssimo, harmônico e muito fiel a quem eu sou.",
   },
 ];
 
 const TestimonialsSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "center" },
-    [Autoplay({ delay: 5500, stopOnInteraction: false })]
+    [Autoplay({ delay: 6000, stopOnInteraction: false })]
   );
   const [selected, setSelected] = useState(0);
 
@@ -55,27 +56,18 @@ const TestimonialsSection = () => {
     const onSelect = () => setSelected(emblaApi.selectedScrollSnap());
     emblaApi.on("select", onSelect);
     onSelect();
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
+    return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden bg-gradient-to-b from-background via-forest-deep to-background">
-      {/* Decorative gradients */}
-      <div className="pointer-events-none absolute -top-40 -left-40 w-96 h-96 rounded-full bg-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
-
-      <div className="container mx-auto px-4 relative">
+    <section className="relative py-24 md:py-32 bg-cream-deep overflow-hidden">
+      <div className="container mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <p className="text-primary uppercase tracking-[0.3em] text-xs mb-4">Depoimentos</p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading mb-6">
-            Histórias de <span className="gold-text italic">transformação</span>
+          <span className="eyebrow">Depoimentos</span>
+          <h2 className="font-heading text-4xl md:text-5xl mt-5 mb-6 leading-tight">
+            Histórias de <em className="italic bronze-text font-normal">transformação</em>
           </h2>
-          <div className="section-divider mb-6" />
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            A confiança e o brilho de quem viveu a experiência Lumina.
-          </p>
+          <div className="bronze-divider mx-auto" />
         </ScrollReveal>
 
         <ScrollReveal delay={150}>
@@ -84,38 +76,30 @@ const TestimonialsSection = () => {
               <div className="flex">
                 {testimonials.map((t, i) => (
                   <div key={i} className="flex-[0_0_100%] min-w-0 px-2 md:px-6">
-                    <article className="glass-card p-8 md:p-12 lg:p-14 relative">
-                      <Quote
-                        className="absolute top-6 right-6 md:top-8 md:right-8 w-12 h-12 md:w-16 md:h-16 text-primary/15"
-                        strokeWidth={1}
-                      />
+                    <article className="bg-background border border-border p-8 md:p-12 lg:p-14 relative">
+                      <Quote className="absolute top-6 right-6 md:top-8 md:right-8 w-12 h-12 md:w-14 md:h-14 text-bronze/20" strokeWidth={1} />
 
                       <div className="flex items-center gap-1 mb-6">
                         {Array.from({ length: t.rating }).map((_, idx) => (
-                          <Star
-                            key={idx}
-                            className="w-5 h-5 fill-primary text-primary"
-                            strokeWidth={1.5}
-                          />
+                          <Star key={idx} className="w-4 h-4 fill-bronze text-bronze" strokeWidth={1.5} />
                         ))}
                       </div>
 
-                      <blockquote className="text-base md:text-xl leading-relaxed text-foreground/90 font-light italic mb-10">
+                      <blockquote className="font-heading text-xl md:text-2xl leading-relaxed text-foreground/90 italic mb-10">
                         "{t.text}"
                       </blockquote>
 
-                      <div className="flex items-center gap-4 pt-6 border-t border-primary/10">
-                        <div className="relative">
-                          <div className="absolute inset-0 rounded-full gold-gradient blur-md opacity-40" />
-                          <Avatar className="relative h-14 w-14 ring-2 ring-primary/40">
-                            <AvatarFallback className="bg-gradient-to-br from-accent to-secondary text-primary font-heading text-lg">
-                              {t.initials}
-                            </AvatarFallback>
-                          </Avatar>
-                        </div>
+                      <div className="flex items-center gap-4 pt-6 border-t border-border">
+                        <Avatar className="h-12 w-12 ring-1 ring-bronze/40">
+                          <AvatarFallback className="bg-cream-deep text-foreground font-heading text-sm">
+                            {t.initials}
+                          </AvatarFallback>
+                        </Avatar>
                         <div>
-                          <p className="font-heading text-lg text-foreground">{t.name}</p>
-                          <p className="text-sm text-primary/80 tracking-wide">{t.treatment}</p>
+                          <p className="font-heading text-base text-foreground">{t.name}</p>
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mt-1">
+                            {t.treatment}
+                          </p>
                         </div>
                       </div>
                     </article>
@@ -127,32 +111,50 @@ const TestimonialsSection = () => {
             {/* Controls */}
             <button
               onClick={() => emblaApi?.scrollPrev()}
-              aria-label="Depoimento anterior"
-              className="hidden md:flex absolute -left-6 lg:-left-16 top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center rounded-full glass-card hover:bg-primary/20 transition-colors text-primary"
+              aria-label="Anterior"
+              className="hidden md:flex absolute -left-6 lg:-left-16 top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center border border-foreground/30 bg-background hover:bg-foreground hover:text-background transition-colors"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={() => emblaApi?.scrollNext()}
-              aria-label="Próximo depoimento"
-              className="hidden md:flex absolute -right-6 lg:-right-16 top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center rounded-full glass-card hover:bg-primary/20 transition-colors text-primary"
+              aria-label="Próximo"
+              className="hidden md:flex absolute -right-6 lg:-right-16 top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center border border-foreground/30 bg-background hover:bg-foreground hover:text-background transition-colors"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
             </button>
 
             {/* Dots */}
-            <div className="flex justify-center gap-2 mt-8">
+            <div className="flex justify-center gap-2 mt-10">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => emblaApi?.scrollTo(i)}
                   aria-label={`Ir para depoimento ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${
-                    selected === i ? "w-10 bg-primary" : "w-2 bg-primary/30 hover:bg-primary/50"
+                  className={`h-px transition-all duration-500 ${
+                    selected === i ? "w-12 bg-foreground" : "w-6 bg-foreground/20"
                   }`}
                 />
               ))}
             </div>
+          </div>
+        </ScrollReveal>
+
+        {/* CTA WhatsApp abaixo do carrossel */}
+        <ScrollReveal delay={250}>
+          <div className="text-center mt-16">
+            <p className="text-sm text-muted-foreground mb-6 italic font-heading">
+              Pronta para começar a sua história?
+            </p>
+            <a
+              href={whatsappUrl("Olá! Vim pelo site e gostaria de agendar minha avaliação.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary-ink"
+            >
+              Agendar pelo WhatsApp
+              <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
         </ScrollReveal>
       </div>

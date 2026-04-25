@@ -1,55 +1,54 @@
-import heroVideo from "@/assets/hero-video.mp4";
-import { MessageCircle } from "lucide-react";
+import heroImg from "@/assets/af-hero.jpg";
+import { ArrowRight } from "lucide-react";
+import { whatsappUrl } from "@/lib/contact";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <video
-          src={heroVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
-      </div>
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-background pt-24">
+      <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+        {/* Text */}
+        <div className="relative z-10 max-w-xl">
+          <div className="animate-fade-up">
+            <span className="eyebrow">Arquitetura Facial Clinic</span>
+          </div>
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center max-w-4xl">
-        <div className="animate-fade-up">
-          <span className="inline-block text-sm font-body tracking-[0.3em] uppercase text-primary mb-6">
-            Fortaleza · Ceará
-          </span>
+          <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.05] mt-6 mb-8 animate-fade-up-delay-1">
+            A beleza é uma <em className="italic font-normal bronze-text">Construção</em>.
+          </h1>
+
+          <p className="font-body text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-md animate-fade-up-delay-2">
+            Método exclusivo da Dra. Emanuele Melo para harmonia, equilíbrio e naturalidade —
+            construído sob medida para cada rosto.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-up-delay-3">
+            <a
+              href={whatsappUrl("Olá! Vim pelo site e gostaria de agendar minha avaliação de Arquitetura Facial.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary-ink"
+            >
+              Agendar Avaliação
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <a href="#servicos" className="btn-outline-ink">
+              Ver Tratamentos
+            </a>
+          </div>
         </div>
 
-        <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-medium leading-tight mb-6 animate-fade-up-delay-1">
-          Onde a ciência encontra a sua{" "}
-          <span className="gold-text italic">melhor versão</span>
-        </h1>
-
-        <p className="font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-up-delay-2">
-          Estética avançada, harmonização facial e saúde feminina com atendimento exclusivo no Complexo São Mateus.
-        </p>
-
-        <div className="animate-fade-up-delay-3">
-          <a
-            href="https://wa.me/5585987144701?text=Olá! Gostaria de agendar uma consulta na Lumina Clinic."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 gold-gradient text-primary-foreground font-body font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_hsla(40,50%,55%,0.3)]"
-          >
-            <MessageCircle className="w-5 h-5" />
-            Agendar Consulta via WhatsApp
-          </a>
+        {/* Image */}
+        <div className="relative animate-fade-up-delay-2">
+          <div className="absolute -top-6 -left-6 w-24 h-24 border border-bronze/40" />
+          <div className="absolute -bottom-6 -right-6 w-24 h-24 border border-bronze/40" />
+          <img
+            src={heroImg}
+            alt="Ambiente luxuoso da Arquitetura Facial Clinic"
+            className="w-full h-[520px] md:h-[620px] object-cover relative"
+            width={1536}
+            height={1152}
+          />
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-px h-12 bg-gradient-to-b from-primary/60 to-transparent" />
       </div>
     </section>
   );
