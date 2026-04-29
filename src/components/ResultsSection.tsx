@@ -1,107 +1,100 @@
+import { useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import imgLimpeza from "@/assets/svc-limpeza.jpg";
-import imgHydragloss from "@/assets/svc-hydragloss.jpg";
-import imgMicroagulhamento from "@/assets/svc-microagulhamento.jpg";
-import imgBotox from "@/assets/svc-botox.jpg";
-import imgBioestimulador from "@/assets/svc-bioestimulador.jpg";
-import imgOtomodelacao from "@/assets/svc-otomodelacao.jpg";
-import imgPreenchimento from "@/assets/svc-preenchimento.jpg";
-import imgPerfiloplastia from "@/assets/svc-perfiloplastia.jpg";
-import imgTecnologias from "@/assets/svc-tecnologias.jpg";
+import img1 from "@/assets/clinic-room.jpg";
+import img2 from "@/assets/clinic-detail.jpg";
+import img3 from "@/assets/clinic-reception.jpg";
+import img4 from "@/assets/af-hero.jpg";
 
 const results = [
-  {
-    image: imgLimpeza,
-    eyebrow: "LIMPEZA DE PELE",
-    title: "Pele Purificada e Preparada",
-    desc: "Remoção profunda de impurezas, devolvendo o viço e a textura ideal para realçar a sua beleza natural.",
-  },
-  {
-    image: imgHydragloss,
-    eyebrow: "HYDRAGLOSS",
-    title: "Revitalização Labial",
-    desc: "Hidratação intensa que restaura o brilho, a maciez e o contorno natural dos lábios.",
-  },
-  {
-    image: imgMicroagulhamento,
-    eyebrow: "MICROAGULHAMENTO",
-    title: "Renovação Celular",
-    desc: "Estímulo natural de colágeno para atenuar marcas, fechar poros e uniformizar o tom da pele.",
-  },
-  {
-    image: imgBotox,
-    eyebrow: "BOTOX",
-    title: "Prevenção e Suavidade",
-    desc: "Relaxamento muscular estratégico para suavizar linhas de expressão preservando a naturalidade dos seus movimentos.",
-  },
-  {
-    image: imgBioestimulador,
-    eyebrow: "BIOESTIMULADOR DE COLÁGENO",
-    title: "Firmeza e Sustentação",
-    desc: "Tratamento que age de dentro para fora, restaurando a elasticidade e combatendo a flacidez facial a longo prazo.",
-  },
-  {
-    image: imgOtomodelacao,
-    eyebrow: "OTOMODELAÇÃO",
-    title: "Harmonia e Proporção",
-    desc: "Ajuste sutil e não cirúrgico do formato das orelhas, promovendo equilíbrio facial e resgatando a autoconfiança.",
-  },
-  {
-    image: imgPreenchimento,
-    eyebrow: "PREENCHIMENTOS FACIAIS",
-    title: "Restauração de Volume",
-    desc: "Reposição estratégica de ácido hialurônico para devolver suporte, contorno e juventude ao rosto.",
-  },
-  {
-    image: imgPerfiloplastia,
-    eyebrow: "PERFILOPLASTIA",
-    title: "Alinhamento de Perfil",
-    desc: "Análise e preenchimento combinado de nariz, lábios e mento para criar um perfil perfeitamente equilibrado.",
-  },
-  {
-    image: imgTecnologias,
-    eyebrow: "TECNOLOGIAS",
-    title: "Alta Performance",
-    desc: "Protocolos avançados com equipamentos de ponta para potencializar e manter os resultados da sua arquitetura facial.",
-  },
+  { image: img1, title: "Restauração de Volume", desc: "Reposição estratégica para devolver suporte e juventude ao terço médio." },
+  { image: img2, title: "Definição de Contorno", desc: "Realce do ângulo mandibular com naturalidade e equilíbrio." },
+  { image: img3, title: "Harmonização Global", desc: "Ajustes sutis que valorizam a identidade e renovam a expressão." },
+  { image: img4, title: "Rejuvenescimento Sutil", desc: "Suavização dos sinais do tempo sem alterar os traços naturais." },
 ];
 
-const spaceLetters = (s: string) => s.split("").join(" ");
-
 const ResultsSection = () => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start", duration: 38 });
+  const [selected, setSelected] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setSelected(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+    onSelect();
+    return () => { emblaApi.off("select", onSelect); };
+  }, [emblaApi]);
+
   return (
     <section id="resultados" className="py-24 md:py-32 bg-background">
       <div className="container mx-auto px-6">
         <ScrollReveal>
-          <div className="max-w-xl mb-16">
-            <span className="eyebrow">Casos & Resultados</span>
-            <h2 className="font-heading text-4xl md:text-5xl mt-5 leading-tight">
-              Naturalidade que <em className="italic bronze-text font-normal">se vê</em>.
-            </h2>
-            <div className="bronze-divider mt-6" />
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+            <div className="max-w-xl">
+              <span className="eyebrow">Casos & Resultados</span>
+              <h2 className="font-heading text-4xl md:text-5xl mt-5 leading-tight">
+                Naturalidade que <em className="italic bronze-text font-normal">se vê</em>.
+              </h2>
+              <div className="bronze-divider mt-6" />
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => emblaApi?.scrollPrev()}
+                aria-label="Anterior"
+                className="w-12 h-12 border border-foreground/30 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
+              </button>
+              <button
+                onClick={() => emblaApi?.scrollNext()}
+                aria-label="Próximo"
+                className="w-12 h-12 border border-foreground/30 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
+              >
+                <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
+              </button>
+            </div>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={150}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {results.map((r, i) => (
-              <article key={i} className="group">
-                <div className="overflow-hidden bg-cream-deep aspect-[4/5]">
-                  <img
-                    src={r.image}
-                    alt={r.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {results.map((r, i) => (
+                <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33%] min-w-0 pr-6">
+                  <article className="group">
+                    <div className="overflow-hidden bg-cream-deep">
+                      <img
+                        src={r.image}
+                        alt={r.title}
+                        loading="lazy"
+                        className="w-full h-[460px] object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="pt-6">
+                      <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
+                        Caso 0{i + 1}
+                      </p>
+                      <h3 className="font-heading text-xl text-foreground mb-2">{r.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
+                    </div>
+                  </article>
                 </div>
-                <div className="pt-6">
-                  <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
-                    {spaceLetters(r.eyebrow)}
-                  </p>
-                  <h3 className="font-heading text-xl text-foreground mb-2">{r.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
-                </div>
-              </article>
+              ))}
+            </div>
+          </div>
+
+          {/* Progress dots */}
+          <div className="flex justify-center gap-2 mt-10">
+            {results.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => emblaApi?.scrollTo(i)}
+                aria-label={`Ir para caso ${i + 1}`}
+                className={`h-px transition-all duration-500 ${
+                  selected === i ? "w-12 bg-foreground" : "w-6 bg-foreground/20"
+                }`}
+              />
             ))}
           </div>
         </ScrollReveal>
