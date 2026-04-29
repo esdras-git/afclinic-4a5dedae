@@ -1,15 +1,4 @@
-import {
-  Droplet,
-  Sparkles,
-  Syringe,
-  Activity,
-  Layers,
-  Ear,
-  Smile,
-  Aperture,
-  Cpu,
-  ArrowRight,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import { whatsappUrl } from "@/lib/contact";
 import imgLimpeza from "@/assets/svc-limpeza.jpg";
@@ -23,15 +12,15 @@ import imgPerfilo from "@/assets/svc-perfiloplastia.jpg";
 import imgTec from "@/assets/svc-tecnologias.jpg";
 
 const services = [
-  { icon: Droplet, name: "Limpeza de Pele", image: imgLimpeza },
-  { icon: Sparkles, name: "Hydragloss", image: imgHydra },
-  { icon: Activity, name: "Microagulhamento", image: imgMicro },
-  { icon: Syringe, name: "Botox", image: imgBotox },
-  { icon: Layers, name: "Bioestimulador de Colágeno", image: imgBio },
-  { icon: Ear, name: "Otomodelação", image: imgOto },
-  { icon: Smile, name: "Preenchimentos Faciais", image: imgPreench },
-  { icon: Aperture, name: "Perfiloplastia", image: imgPerfilo },
-  { icon: Cpu, name: "Tecnologias", image: imgTec },
+  { name: "Limpeza de Pele", image: imgLimpeza, desc: "Higienização profunda e renovação celular." },
+  { name: "Hydragloss", image: imgHydra, desc: "Hidratação intensa com efeito glow imediato." },
+  { name: "Microagulhamento", image: imgMicro, desc: "Estímulo ao colágeno e renovação da pele." },
+  { name: "Botox", image: imgBotox, desc: "Suavização de linhas com naturalidade." },
+  { name: "Bioestimulador de Colágeno", image: imgBio, desc: "Firmeza e qualidade da pele a longo prazo." },
+  { name: "Otomodelação", image: imgOto, desc: "Correção sutil e harmônica das orelhas." },
+  { name: "Preenchimentos Faciais", image: imgPreench, desc: "Volume e contorno restaurados com precisão." },
+  { name: "Perfiloplastia", image: imgPerfilo, desc: "Equilíbrio do perfil facial em harmonia." },
+  { name: "Tecnologias", image: imgTec, desc: "Protocolos avançados para resultados refinados." },
 ];
 
 const ServicesSection = () => {
@@ -48,10 +37,13 @@ const ServicesSection = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((s, i) => (
             <ScrollReveal key={s.name} delay={i * 60}>
-              <div className="group bg-background h-full flex flex-col cursor-default overflow-hidden">
+              <article
+                className="group h-full flex flex-col bg-background border transition-all duration-300 hover:shadow-lg"
+                style={{ borderColor: "rgba(197, 160, 89, 0.3)" }}
+              >
                 <div className="relative overflow-hidden aspect-[4/3]">
                   <img
                     src={s.image}
@@ -61,17 +53,25 @@ const ServicesSection = () => {
                     height={600}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                <div className="p-8 md:p-10 flex flex-col items-start gap-5">
-                  <div className="w-12 h-12 flex items-center justify-center border border-foreground/15 group-hover:border-bronze group-hover:bg-bronze/5 transition-all">
-                    <s.icon className="w-5 h-5 text-foreground group-hover:text-bronze transition-colors" strokeWidth={1.4} />
-                  </div>
-                  <h3 className="font-heading text-lg md:text-xl text-foreground leading-snug">
+                <div className="p-8 flex flex-col flex-1 gap-4">
+                  <h3 className="font-heading text-xl text-foreground leading-snug">
                     {s.name}
                   </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                    {s.desc}
+                  </p>
+                  <a
+                    href={whatsappUrl(`Olá! Tenho interesse no procedimento: ${s.name}. Gostaria de agendar minha avaliação.`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary-ink w-full mt-2"
+                  >
+                    Agendar este procedimento
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
                 </div>
-              </div>
+              </article>
             </ScrollReveal>
           ))}
         </div>
