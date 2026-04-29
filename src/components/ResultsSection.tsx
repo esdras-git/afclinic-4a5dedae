@@ -2,16 +2,26 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import img1 from "@/assets/clinic-room.jpg";
-import img2 from "@/assets/clinic-detail.jpg";
-import img3 from "@/assets/clinic-reception.jpg";
-import img4 from "@/assets/af-hero.jpg";
+import imgLimpeza from "@/assets/svc-limpeza.jpg";
+import imgHydra from "@/assets/svc-hydragloss.jpg";
+import imgMicro from "@/assets/svc-microagulhamento.jpg";
+import imgBotox from "@/assets/svc-botox.jpg";
+import imgBio from "@/assets/svc-bioestimulador.jpg";
+import imgOto from "@/assets/svc-otomodelacao.jpg";
+import imgPreench from "@/assets/svc-preenchimento.jpg";
+import imgPerfil from "@/assets/svc-perfiloplastia.jpg";
+import imgTec from "@/assets/svc-tecnologias.jpg";
 
 const results = [
-  { image: img1, title: "Restauração de Volume", desc: "Reposição estratégica para devolver suporte e juventude ao terço médio." },
-  { image: img2, title: "Definição de Contorno", desc: "Realce do ângulo mandibular com naturalidade e equilíbrio." },
-  { image: img3, title: "Harmonização Global", desc: "Ajustes sutis que valorizam a identidade e renovam a expressão." },
-  { image: img4, title: "Rejuvenescimento Sutil", desc: "Suavização dos sinais do tempo sem alterar os traços naturais." },
+  { image: imgLimpeza, label: "Limpeza de Pele", title: "Pele Renovada", desc: "Higienização profunda que devolve viço, maciez e luminosidade à pele." },
+  { image: imgHydra, label: "Hydragloss", title: "Brilho & Hidratação", desc: "Tratamento de hidratação intensa para um efeito glow natural e duradouro." },
+  { image: imgMicro, label: "Microagulhamento", title: "Textura Refinada", desc: "Estímulo de colágeno que suaviza marcas, poros e melhora a qualidade da pele." },
+  { image: imgBotox, label: "Botox", title: "Expressão Suave", desc: "Atenuação de linhas dinâmicas preservando a naturalidade dos traços." },
+  { image: imgBio, label: "Bioestimulador de Colágeno", title: "Firmeza & Sustentação", desc: "Reposição de colágeno para devolver densidade e suporte ao rosto." },
+  { image: imgOto, label: "Otomodelação", title: "Harmonia das Orelhas", desc: "Reposicionamento sutil para equilibrar proporção e contorno facial." },
+  { image: imgPreench, label: "Preenchimentos Faciais", title: "Volume Estratégico", desc: "Restauração de volumes perdidos com naturalidade e proporção áurea." },
+  { image: imgPerfil, label: "Perfiloplastia", title: "Perfil Equilibrado", desc: "Refinamento de mento, nariz e mandíbula para um perfil em harmonia." },
+  { image: imgTec, label: "Tecnologias", title: "Alta Performance", desc: "Protocolos com tecnologia avançada para resultados precisos e duradouros." },
 ];
 
 const ResultsSection = () => {
@@ -73,7 +83,7 @@ const ResultsSection = () => {
                     </div>
                     <div className="pt-6">
                       <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
-                        Caso 0{i + 1}
+                        {r.label}
                       </p>
                       <h3 className="font-heading text-xl text-foreground mb-2">{r.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
@@ -90,7 +100,7 @@ const ResultsSection = () => {
               <button
                 key={i}
                 onClick={() => emblaApi?.scrollTo(i)}
-                aria-label={`Ir para caso ${i + 1}`}
+                aria-label={`Ir para slide ${i + 1}`}
                 className={`h-px transition-all duration-500 ${
                   selected === i ? "w-12 bg-foreground" : "w-6 bg-foreground/20"
                 }`}
