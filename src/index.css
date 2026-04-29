@@ -100,14 +100,12 @@
   }
 
   .btn-primary-ink {
-    @apply inline-flex items-center justify-center gap-2 font-body font-medium px-8 py-4 tracking-wide uppercase text-xs transition-all duration-300;
-    background: #000000;
-    color: #FFFFFF;
-    border-radius: 0;
+    @apply inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-body font-medium px-8 py-4 rounded-sm tracking-wide uppercase text-xs transition-all duration-300;
     letter-spacing: 0.18em;
   }
   .btn-primary-ink:hover {
-    background: #333333;
+    background: hsl(var(--ink-soft));
+    box-shadow: inset 0 0 0 1px hsl(var(--bronze));
   }
 
   .btn-outline-ink {
