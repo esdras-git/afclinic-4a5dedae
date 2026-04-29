@@ -52,7 +52,13 @@ const AboutSection = () => {
                 para suavizar sinais do tempo, melhorar proporções e destacar seus traços mais bonitos —
                 sempre respeitando quem você é.
               </p>
-              <p className="text-foreground italic font-heading text-lg pt-2">
+            </div>
+
+            <div
+              className="mt-8 px-8 py-7 border-l-2 border-bronze"
+              style={{ background: "#FDFCFB" }}
+            >
+              <p className="text-foreground italic font-heading text-lg md:text-xl leading-relaxed">
                 O resultado? Um rosto mais equilibrado, elegante e confiante, sem perder a sua essência.
               </p>
             </div>
