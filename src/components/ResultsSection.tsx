@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import img1 from "@/assets/case-01.jpg";
-import img2 from "@/assets/case-02.jpg";
+import img1 from "@/assets/clinic-room.jpg";
+import img2 from "@/assets/clinic-detail.jpg";
+import img3 from "@/assets/clinic-reception.jpg";
+import img4 from "@/assets/af-hero.jpg";
 
 const results = [
-  { image: img1, title: "Harmonização Frontal", desc: "Refinamento de traços e equilíbrio do terço inferior com naturalidade." },
-  { image: img2, title: "Perfiloplastia", desc: "Realinhamento do perfil com projeção harmônica do mento e nariz." },
+  { image: img1, title: "Restauração de Volume", desc: "Reposição estratégica para devolver suporte e juventude ao terço médio." },
+  { image: img2, title: "Definição de Contorno", desc: "Realce do ângulo mandibular com naturalidade e equilíbrio." },
+  { image: img3, title: "Harmonização Global", desc: "Ajustes sutis que valorizam a identidade e renovam a expressão." },
+  { image: img4, title: "Rejuvenescimento Sutil", desc: "Suavização dos sinais do tempo sem alterar os traços naturais." },
 ];
 
 const ResultsSection = () => {
