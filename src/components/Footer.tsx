@@ -47,15 +47,9 @@ const Footer = () => {
               <p className="eyebrow mb-5">Contato</p>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li>
-                  <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <a href="https://wa.me/5585920001729" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-foreground transition-colors">
                     <Phone className="w-4 h-4" strokeWidth={1.5} />
-                    +55 85 9871-4701
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:contato@arquiteturafacialclinic.com" className="flex items-center gap-3 hover:text-foreground transition-colors">
-                    <Mail className="w-4 h-4" strokeWidth={1.5} />
-                    contato@arquiteturafacialclinic.com
+                    +55 85 92000-1729
                   </a>
                 </li>
               </ul>
@@ -64,27 +58,32 @@ const Footer = () => {
             {/* Endereço */}
             <div>
               <p className="eyebrow mb-5">Endereço</p>
-              <div className="flex items-start gap-3 text-sm text-muted-foreground">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Complexo+S%C3%A3o+Mateus+Av.+Santos+Dumont+5753+Fortaleza+CE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" strokeWidth={1.5} />
-                <p className="leading-relaxed">
+                <span className="leading-relaxed">
                   Complexo São Mateus<br />
                   Av. Santos Dumont, 5753<br />
                   Fortaleza – CE
-                </p>
-              </div>
+                </span>
+              </a>
             </div>
 
             {/* Social */}
             <div>
               <p className="eyebrow mb-5">Siga</p>
               <a
-                href="https://instagram.com/arquiteturafacialclinic"
+                href="https://instagram.com/af.clinic"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Instagram className="w-4 h-4" strokeWidth={1.5} />
-                @arquiteturafacialclinic
+                @af.clinic
               </a>
             </div>
           </div>

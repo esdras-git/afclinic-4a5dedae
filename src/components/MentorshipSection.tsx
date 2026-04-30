@@ -107,7 +107,7 @@ const MentorshipSection = () => {
               href={mentorshipUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-3 px-10 py-5 text-xs font-medium uppercase rounded-sm transition-all duration-300"
+              className="group inline-flex w-full sm:w-auto items-center justify-center text-center gap-3 px-10 py-5 text-xs font-medium uppercase rounded-sm transition-all duration-300"
               style={{
                 letterSpacing: "0.18em",
                 backgroundColor: "#FDFCFB",
