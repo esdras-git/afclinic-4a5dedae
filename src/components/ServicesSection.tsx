@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import { whatsappUrl } from "@/lib/contact";
+import { track } from "@/lib/analytics";
 import imgLimpeza from "@/assets/svc-limpeza.jpg";
 import imgHydra from "@/assets/svc-hydragloss.jpg";
 import imgMicro from "@/assets/svc-microagulhamento.jpg";
@@ -82,6 +83,7 @@ const ServicesSection = () => {
               href={whatsappUrl("Olá! Quero agendar minha Avaliação de Arquitetura Facial.")}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track("cta_click", { location: "services", label: "Quero Agendar Minha Avaliação", channel: "whatsapp" })}
               className="btn-primary-ink"
             >
               Quero Agendar Minha Avaliação de Arquitetura Facial
