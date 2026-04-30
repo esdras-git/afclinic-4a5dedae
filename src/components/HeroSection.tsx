@@ -45,11 +45,16 @@ const HeroSection = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary-ink"
+              onClick={() => track("cta_click", { location: "hero", label: "Agendar Avaliação", channel: "whatsapp" })}
             >
               Agendar Avaliação
               <ArrowRight className="w-4 h-4" />
             </a>
-            <a href="#servicos" className="btn-outline-ink">
+            <a
+              href="#servicos"
+              className="btn-outline-ink"
+              onClick={() => track("cta_click", { location: "hero", label: "Ver Tratamentos" })}
+            >
               Ver Tratamentos
             </a>
           </div>
