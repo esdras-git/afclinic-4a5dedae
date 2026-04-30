@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import imgLimpeza from "@/assets/svc-limpeza.jpg";
-import imgHydra from "@/assets/svc-hydragloss.jpg";
-import imgMicro from "@/assets/svc-microagulhamento.jpg";
-import imgBotox from "@/assets/svc-botox.jpg";
-import imgBio from "@/assets/svc-bioestimulador.jpg";
-import imgOto from "@/assets/svc-otomodelacao.jpg";
-import imgPreench from "@/assets/svc-preenchimento.jpg";
-import imgPerfil from "@/assets/svc-perfiloplastia.jpg";
+import imgLimpeza from "@/assets/case-limpeza.jpg";
+import imgHydra from "@/assets/case-hydragloss.jpg";
+import imgMicro from "@/assets/case-microagulhamento.jpg";
+import imgBotox from "@/assets/case-botox.jpg";
+import imgBio from "@/assets/case-bioestimulador.jpg";
+import imgOto from "@/assets/case-otomodelacao.jpg";
+import imgPreench from "@/assets/case-preenchimento.jpg";
+import imgPerfil from "@/assets/case-perfiloplastia.jpg";
 import imgTec from "@/assets/svc-tecnologias.jpg";
 
 const results = [
