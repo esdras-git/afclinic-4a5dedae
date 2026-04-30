@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import afLogo from "@/assets/af-logo.png";
 import { whatsappUrl } from "@/lib/contact";
+import { track } from "@/lib/analytics";
 
 const navLinks = [
   { label: "Serviços", href: "#servicos" },
@@ -47,6 +48,7 @@ const Navbar = () => {
             <a
               key={l.label}
               href={l.href}
+              onClick={() => track("nav_click", { location: "navbar_desktop", label: l.label, href: l.href })}
               className="text-xs font-body uppercase tracking-[0.2em] text-foreground/70 hover:text-foreground transition-colors"
             >
               {l.label}
@@ -56,6 +58,7 @@ const Navbar = () => {
             href={whatsappUrl()}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track("cta_click", { location: "navbar", label: "Agendar", channel: "whatsapp" })}
             className="btn-primary-ink !py-3 !px-6"
           >
             Agendar
@@ -79,7 +82,10 @@ const Navbar = () => {
             <a
               key={l.label}
               href={l.href}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                setMenuOpen(false);
+                track("nav_click", { location: "navbar_mobile", label: l.label, href: l.href });
+              }}
               className="block text-sm font-body uppercase tracking-[0.2em] text-foreground/70 hover:text-foreground"
             >
               {l.label}
@@ -89,6 +95,7 @@ const Navbar = () => {
             href={whatsappUrl()}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track("cta_click", { location: "navbar_mobile", label: "Agendar", channel: "whatsapp" })}
             className="btn-primary-ink w-full"
           >
             Agendar

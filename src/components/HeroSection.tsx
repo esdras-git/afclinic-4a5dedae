@@ -1,19 +1,26 @@
-import heroVideo from "@/assets/af-hero.mp4";
+import heroVideoMp4 from "@/assets/af-hero.mp4";
+import heroVideoWebm from "@/assets/af-hero.webm";
+import heroPoster from "@/assets/af-hero.jpg";
 import { ArrowRight } from "lucide-react";
 import { whatsappUrl } from "@/lib/contact";
+import { track } from "@/lib/analytics";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-24 pb-16">
-      {/* Background video */}
+      {/* Background video — multi-format with poster fallback */}
       <video
-        src={heroVideo}
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
+        poster={heroPoster}
         className="absolute inset-0 w-full h-full object-cover"
-      />
+      >
+        <source src={heroVideoWebm} type="video/webm" />
+        <source src={heroVideoMp4} type="video/mp4" />
+      </video>
       {/* Overlay for legibility */}
       <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px]" />
 
@@ -38,11 +45,16 @@ const HeroSection = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary-ink"
+              onClick={() => track("cta_click", { location: "hero", label: "Agendar Avaliação", channel: "whatsapp" })}
             >
               Agendar Avaliação
               <ArrowRight className="w-4 h-4" />
             </a>
-            <a href="#servicos" className="btn-outline-ink">
+            <a
+              href="#servicos"
+              className="btn-outline-ink"
+              onClick={() => track("cta_click", { location: "hero", label: "Ver Tratamentos" })}
+            >
               Ver Tratamentos
             </a>
           </div>

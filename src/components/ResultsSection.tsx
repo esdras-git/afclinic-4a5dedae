@@ -72,7 +72,7 @@ const ResultsSection = () => {
             <div className="flex">
               {results.map((r, i) => (
                 <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33%] min-w-0 pr-6">
-                  <article className="group">
+                  <article className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-shadow duration-500 border border-border/40">
                     <div className="overflow-hidden bg-cream-deep">
                       <img
                         src={r.image}
@@ -81,7 +81,7 @@ const ResultsSection = () => {
                         className="w-full h-[460px] object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     </div>
-                    <div className="pt-6">
+                    <div className="p-6">
                       <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
                         {r.label}
                       </p>

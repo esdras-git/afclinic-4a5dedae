@@ -4,6 +4,7 @@ import room from "@/assets/clinic-room.jpg";
 import detail from "@/assets/clinic-detail.jpg";
 import afLogo from "@/assets/af-logo.png";
 import { whatsappUrl, WHATSAPP_NUMBER } from "@/lib/contact";
+import { track } from "@/lib/analytics";
 
 const Footer = () => {
   return (
@@ -47,7 +48,7 @@ const Footer = () => {
               <p className="eyebrow mb-5">Contato</p>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li>
-                  <a href="https://wa.me/5585920001729" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <a href="https://wa.me/5585920001729" target="_blank" rel="noopener noreferrer" onClick={() => track("cta_click", { location: "footer", label: "WhatsApp", channel: "whatsapp" })} className="flex items-center gap-3 hover:text-foreground transition-colors">
                     <Phone className="w-4 h-4" strokeWidth={1.5} />
                     +55 85 92000-1729
                   </a>
@@ -62,6 +63,7 @@ const Footer = () => {
                 href="https://www.google.com/maps/search/?api=1&query=Complexo+S%C3%A3o+Mateus+Av.+Santos+Dumont+5753+Fortaleza+CE"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track("map_click", { location: "footer", destination: "google_maps" })}
                 className="flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" strokeWidth={1.5} />
@@ -80,6 +82,7 @@ const Footer = () => {
                 href="https://instagram.com/af.clinic"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track("social_click", { location: "footer", network: "instagram" })}
                 className="inline-flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Instagram className="w-4 h-4" strokeWidth={1.5} />
