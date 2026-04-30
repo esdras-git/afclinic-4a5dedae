@@ -25,7 +25,7 @@ const results = [
 ];
 
 const ResultsSection = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start", duration: 38 });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 38 });
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
