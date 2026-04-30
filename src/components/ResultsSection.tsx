@@ -73,12 +73,12 @@ const ResultsSection = () => {
               {results.map((r, i) => (
                 <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33%] min-w-0 pr-6">
                   <article className="group">
-                    <div className="overflow-hidden bg-cream-deep aspect-[3/4] border border-foreground/5 shadow-[0_8px_30px_-12px_hsl(var(--foreground)/0.15)]">
+                    <div className="overflow-hidden bg-cream-deep">
                       <img
                         src={r.image}
                         alt={r.title}
                         loading="lazy"
-                        className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-[460px] object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     </div>
                     <div className="pt-6">
