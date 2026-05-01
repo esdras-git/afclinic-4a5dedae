@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import imgLimpeza from "@/assets/case-limpeza.jpg";
 import imgHydra from "@/assets/case-hydragloss.jpg";
