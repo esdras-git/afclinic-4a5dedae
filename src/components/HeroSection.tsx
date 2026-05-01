@@ -19,20 +19,45 @@ if (typeof document !== "undefined" && !document.getElementById("hero-poster-pre
 }
 
 const HeroSection = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [loadVideo, setLoadVideo] = useState(false);
+
+  useEffect(() => {
+    // Defer video loading until the browser is idle, so it doesn't
+    // compete with critical resources during TTI.
+    const schedule = (cb: () => void) => {
+      const w = window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
+      if (typeof w.requestIdleCallback === "function") {
+        w.requestIdleCallback(cb, { timeout: 3000 });
+      } else {
+        window.setTimeout(cb, 2000);
+      }
+    };
+    schedule(() => setLoadVideo(true));
+  }, []);
+
+  useEffect(() => {
+    if (loadVideo && videoRef.current) {
+      videoRef.current.load();
+    }
+  }, [loadVideo]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-24 pb-16">
-      {/* Background video — multi-format with poster fallback */}
+      {/* Background video — multi-format with poster fallback. Sources are
+          attached after the page is interactive to avoid blocking TTI. */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="none"
         poster={heroPoster}
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src={heroVideoWebm} type="video/webm" />
-        <source src={heroVideoMp4} type="video/mp4" />
+        {loadVideo && <source src={heroVideoWebm} type="video/webm" />}
+        {loadVideo && <source src={heroVideoMp4} type="video/mp4" />}
       </video>
       {/* Overlay for legibility */}
       <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px]" />
