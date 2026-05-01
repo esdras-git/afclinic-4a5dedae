@@ -27,6 +27,7 @@ const results = [
 const ResultsSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 38 });
   const [selected, setSelected] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -35,6 +36,32 @@ const ResultsSection = () => {
     onSelect();
     return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
+
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const prevLightbox = useCallback(
+    () => setLightboxIndex((i) => (i === null ? i : (i - 1 + results.length) % results.length)),
+    []
+  );
+  const nextLightbox = useCallback(
+    () => setLightboxIndex((i) => (i === null ? i : (i + 1) % results.length)),
+    []
+  );
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prevLightbox();
+      if (e.key === "ArrowRight") nextLightbox();
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [lightboxIndex, closeLightbox, prevLightbox, nextLightbox]);
 
   return (
     <section id="resultados" className="py-24 md:py-32 bg-background">
