@@ -31,7 +31,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-20">
         <a href="#" className="flex items-center gap-3">
-          <img src={afLogo} alt="Arquitetura Facial Clinic" className="w-14 h-14 object-contain" />
+          <img src={afLogo} alt="Arquitetura Facial Clinic" width={56} height={56} loading="eager" decoding="async" fetchPriority="high" className="w-14 h-14 object-contain" />
           <div className="leading-tight">
             <p className="font-heading text-base md:text-lg text-foreground tracking-wide">
               Arquitetura Facial
