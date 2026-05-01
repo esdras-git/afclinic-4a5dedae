@@ -10,7 +10,7 @@ import imgBio from "@/assets/case-bioestimulador.jpg";
 import imgOto from "@/assets/case-otomodelacao.jpg";
 import imgPreench from "@/assets/case-preenchimento.jpg";
 import imgPerfil from "@/assets/case-perfiloplastia.jpg";
-import imgTec from "@/assets/svc-tecnologias.jpg";
+import imgTec from "@/assets/svc-tecnologias.webp";
 
 const results = [
   { image: imgLimpeza, label: "Limpeza de Pele", title: "Pele Renovada", desc: "Higienização profunda que devolve viço, maciez e luminosidade à pele." },
