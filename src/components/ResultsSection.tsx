@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import imgLimpeza from "@/assets/case-limpeza.jpg";
 import imgHydra from "@/assets/case-hydragloss.jpg";
@@ -27,6 +27,7 @@ const results = [
 const ResultsSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 38 });
   const [selected, setSelected] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -35,6 +36,32 @@ const ResultsSection = () => {
     onSelect();
     return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
+
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const prevLightbox = useCallback(
+    () => setLightboxIndex((i) => (i === null ? i : (i - 1 + results.length) % results.length)),
+    []
+  );
+  const nextLightbox = useCallback(
+    () => setLightboxIndex((i) => (i === null ? i : (i + 1) % results.length)),
+    []
+  );
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prevLightbox();
+      if (e.key === "ArrowRight") nextLightbox();
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [lightboxIndex, closeLightbox, prevLightbox, nextLightbox]);
 
   return (
     <section id="resultados" className="py-24 md:py-32 bg-background">
@@ -73,14 +100,19 @@ const ResultsSection = () => {
               {results.map((r, i) => (
                 <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33%] min-w-0 pr-6">
                   <article className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-shadow duration-500 border border-border/40">
-                    <div className="overflow-hidden bg-cream-deep">
+                    <button
+                      type="button"
+                      onClick={() => setLightboxIndex(i)}
+                      aria-label={`Ampliar imagem: ${r.title}`}
+                      className="block w-full overflow-hidden bg-cream-deep cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze"
+                    >
                       <img
                         src={r.image}
                         alt={r.title}
                         loading="lazy"
-                        className="w-full h-[460px] object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-[460px] object-cover transition-transform duration-700 group-hover:scale-105 group-hover:brightness-105"
                       />
-                    </div>
+                    </button>
                     <div className="p-6">
                       <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
                         {r.label}
@@ -109,6 +141,72 @@ const ResultsSection = () => {
           </div>
         </ScrollReveal>
       </div>
+
+      {/* Lightbox / Modal */}
+      {lightboxIndex !== null && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Imagem ampliada: ${results[lightboxIndex].title}`}
+          onClick={closeLightbox}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
+        >
+          {/* Close */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+            aria-label="Fechar"
+            className="absolute top-5 right-5 md:top-8 md:right-8 w-12 h-12 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+          >
+            <X className="w-5 h-5" strokeWidth={1.5} />
+          </button>
+
+          {/* Prev */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); prevLightbox(); }}
+            aria-label="Imagem anterior"
+            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
+          </button>
+
+          {/* Next */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); nextLightbox(); }}
+            aria-label="Próxima imagem"
+            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
+          </button>
+
+          {/* Image container — touch-pinch-zoom enabled */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-[92vw] max-h-[88vh] overflow-auto touch-pinch-zoom"
+            style={{ touchAction: "pinch-zoom" }}
+          >
+            <img
+              src={results[lightboxIndex].image}
+              alt={results[lightboxIndex].title}
+              className="block max-w-[92vw] max-h-[88vh] w-auto h-auto object-contain select-none"
+              draggable={false}
+            />
+          </div>
+
+          {/* Caption */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-white px-6">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-bronze mb-1">
+              {results[lightboxIndex].label}
+            </p>
+            <p className="font-heading text-lg">{results[lightboxIndex].title}</p>
+            <p className="text-xs text-white/60 mt-1">
+              {lightboxIndex + 1} / {results.length}
+            </p>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
