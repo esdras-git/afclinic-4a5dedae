@@ -5,6 +5,18 @@ import { ArrowRight } from "lucide-react";
 import { whatsappUrl } from "@/lib/contact";
 import { track } from "@/lib/analytics";
 
+// Inject high-priority preload for the hero poster (LCP candidate) as soon
+// as this module is evaluated, so the browser fetches it in parallel with JS.
+if (typeof document !== "undefined" && !document.getElementById("hero-poster-preload")) {
+  const link = document.createElement("link");
+  link.id = "hero-poster-preload";
+  link.rel = "preload";
+  link.as = "image";
+  link.href = heroPoster;
+  link.setAttribute("fetchpriority", "high");
+  document.head.appendChild(link);
+}
+
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-24 pb-16">
