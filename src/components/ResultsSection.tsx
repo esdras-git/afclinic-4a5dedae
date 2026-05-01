@@ -141,6 +141,72 @@ const ResultsSection = () => {
           </div>
         </ScrollReveal>
       </div>
+
+      {/* Lightbox / Modal */}
+      {lightboxIndex !== null && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Imagem ampliada: ${results[lightboxIndex].title}`}
+          onClick={closeLightbox}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
+        >
+          {/* Close */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+            aria-label="Fechar"
+            className="absolute top-5 right-5 md:top-8 md:right-8 w-12 h-12 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+          >
+            <X className="w-5 h-5" strokeWidth={1.5} />
+          </button>
+
+          {/* Prev */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); prevLightbox(); }}
+            aria-label="Imagem anterior"
+            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
+          </button>
+
+          {/* Next */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); nextLightbox(); }}
+            aria-label="Próxima imagem"
+            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
+          </button>
+
+          {/* Image container — touch-pinch-zoom enabled */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-[92vw] max-h-[88vh] overflow-auto touch-pinch-zoom"
+            style={{ touchAction: "pinch-zoom" }}
+          >
+            <img
+              src={results[lightboxIndex].image}
+              alt={results[lightboxIndex].title}
+              className="block max-w-[92vw] max-h-[88vh] w-auto h-auto object-contain select-none"
+              draggable={false}
+            />
+          </div>
+
+          {/* Caption */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-white px-6">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-bronze mb-1">
+              {results[lightboxIndex].label}
+            </p>
+            <p className="font-heading text-lg">{results[lightboxIndex].title}</p>
+            <p className="text-xs text-white/60 mt-1">
+              {lightboxIndex + 1} / {results.length}
+            </p>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
