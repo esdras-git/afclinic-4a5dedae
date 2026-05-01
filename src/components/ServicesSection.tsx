@@ -13,15 +13,15 @@ import {
 import ScrollReveal from "./ScrollReveal";
 import { whatsappUrl } from "@/lib/contact";
 import { track } from "@/lib/analytics";
-import imgLimpeza from "@/assets/svc-limpeza.jpg";
-import imgHydra from "@/assets/svc-hydragloss.jpg";
-import imgMicro from "@/assets/svc-microagulhamento.jpg";
-import imgBotox from "@/assets/svc-botox.jpg";
-import imgBio from "@/assets/svc-bioestimulador.jpg";
-import imgOto from "@/assets/svc-otomodelacao.jpg";
-import imgPreench from "@/assets/svc-preenchimento.jpg";
-import imgPerfilo from "@/assets/svc-perfiloplastia.jpg";
-import imgTec from "@/assets/svc-tecnologias.jpg";
+import imgLimpeza from "@/assets/svc-limpeza.webp";
+import imgHydra from "@/assets/svc-hydragloss.webp";
+import imgMicro from "@/assets/svc-microagulhamento.webp";
+import imgBotox from "@/assets/svc-botox.webp";
+import imgBio from "@/assets/svc-bioestimulador.webp";
+import imgOto from "@/assets/svc-otomodelacao.webp";
+import imgPreench from "@/assets/svc-preenchimento.webp";
+import imgPerfilo from "@/assets/svc-perfiloplastia.webp";
+import imgTec from "@/assets/svc-tecnologias.webp";
 
 const services = [
   { icon: Droplet, name: "Limpeza de Pele", image: imgLimpeza },

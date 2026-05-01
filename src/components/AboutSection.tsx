@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import draImg from "@/assets/dra-emanuele.jpg";
+import draImg from "@/assets/dra-emanuele.webp";
 import { whatsappUrl } from "@/lib/contact";
 
 const AboutSection = () => {
