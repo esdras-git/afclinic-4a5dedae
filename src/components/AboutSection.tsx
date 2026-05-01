@@ -15,7 +15,7 @@ const AboutSection = () => {
               <img
                 src={draImg}
                 alt="Dra. Emanuele Melo"
-                className="relative w-full h-[560px] md:h-[640px] object-cover"
+                className="relative w-full h-[560px] md:h-[640px] object-cover object-top"
                 loading="lazy"
                 width={896}
                 height={1152}
