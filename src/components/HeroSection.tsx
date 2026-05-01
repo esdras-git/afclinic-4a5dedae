@@ -4,6 +4,7 @@ import heroPoster from "@/assets/af-hero.jpg";
 import { ArrowRight } from "lucide-react";
 import { whatsappUrl } from "@/lib/contact";
 import { track } from "@/lib/analytics";
+import { useEffect, useRef, useState } from "react";
 
 // Inject high-priority preload for the hero poster (LCP candidate) as soon
 // as this module is evaluated, so the browser fetches it in parallel with JS.
