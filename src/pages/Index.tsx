@@ -1,25 +1,30 @@
+import { lazy, Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import ServicesSection from "@/components/ServicesSection";
-import AboutSection from "@/components/AboutSection";
-import ResultsSection from "@/components/ResultsSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import MentorshipSection from "@/components/MentorshipSection";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+
+// Defer below-the-fold sections to shrink initial JS bundle
+const ServicesSection = lazy(() => import("@/components/ServicesSection"));
+const AboutSection = lazy(() => import("@/components/AboutSection"));
+const ResultsSection = lazy(() => import("@/components/ResultsSection"));
+const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
+const MentorshipSection = lazy(() => import("@/components/MentorshipSection"));
+const Footer = lazy(() => import("@/components/Footer"));
+const WhatsAppButton = lazy(() => import("@/components/WhatsAppButton"));
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
-      <ServicesSection />
-      <AboutSection />
-      <ResultsSection />
-      <TestimonialsSection />
-      <MentorshipSection />
-      <Footer />
-      <WhatsAppButton />
+      <Suspense fallback={null}>
+        <ServicesSection />
+        <AboutSection />
+        <ResultsSection />
+        <TestimonialsSection />
+        <MentorshipSection />
+        <Footer />
+        <WhatsAppButton />
+      </Suspense>
     </div>
   );
 };
