@@ -294,6 +294,8 @@ const ResultsSection = () => {
             onMouseMove={handleZoomMove}
             onMouseEnter={() => setZoom(true)}
             onMouseLeave={() => setZoom(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             className={`relative max-w-[92vw] max-h-[88vh] overflow-hidden touch-pinch-zoom transition-all duration-300 ease-out ${
               isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
             }`}
@@ -305,8 +307,13 @@ const ResultsSection = () => {
             }}
           >
             <img
+              key={lightboxIndex}
               src={results[lightboxIndex].image}
               alt={results[lightboxIndex].title}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              sizes="92vw"
               className="block max-w-[92vw] max-h-[88vh] w-auto h-auto object-contain select-none transition-transform duration-500 ease-out will-change-transform"
               draggable={false}
               style={{
@@ -314,6 +321,9 @@ const ResultsSection = () => {
                 transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
               }}
             />
+            {/* Preload neighbors for instant swipe nav */}
+            <link rel="preload" as="image" href={results[(lightboxIndex + 1) % results.length].image} />
+            <link rel="preload" as="image" href={results[(lightboxIndex - 1 + results.length) % results.length].image} />
           </div>
 
           {/* Counter only (no case name caption) */}
