@@ -134,6 +134,31 @@ const ResultsSection = () => {
     setZoomOrigin({ x, y });
   };
 
+  // Swipe handlers (mobile) — ignore multi-touch (pinch-zoom)
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchActiveTouches.current = e.touches.length;
+    if (e.touches.length !== 1) {
+      touchStartX.current = null;
+      touchStartY.current = null;
+      return;
+    }
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    if (touchActiveTouches.current > 1) { touchStartX.current = null; return; }
+    const endTouch = e.changedTouches[0];
+    const dx = endTouch.clientX - touchStartX.current;
+    const dy = endTouch.clientY - touchStartY.current;
+    touchStartX.current = null;
+    touchStartY.current = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) nextLightbox(); else prevLightbox();
+    }
+  };
+
 
   return (
     <section id="resultados" className="py-24 md:py-32 bg-background">
