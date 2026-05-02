@@ -216,18 +216,22 @@ const ResultsSection = () => {
       {/* Lightbox / Modal */}
       {lightboxIndex !== null && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label={`Imagem ampliada: ${results[lightboxIndex].title}`}
           onClick={closeLightbox}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
+          className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md transition-opacity duration-300 ease-out ${
+            isOpen ? "opacity-100" : "opacity-0"
+          }`}
         >
           {/* Close */}
           <button
+            ref={closeBtnRef}
             type="button"
             onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
             aria-label="Fechar"
-            className="absolute top-5 right-5 md:top-8 md:right-8 w-12 h-12 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+            className="absolute top-5 right-5 md:top-8 md:right-8 w-12 h-12 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
           </button>
@@ -237,7 +241,7 @@ const ResultsSection = () => {
             type="button"
             onClick={(e) => { e.stopPropagation(); prevLightbox(); }}
             aria-label="Imagem anterior"
-            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
           </button>
@@ -247,34 +251,46 @@ const ResultsSection = () => {
             type="button"
             onClick={(e) => { e.stopPropagation(); nextLightbox(); }}
             aria-label="Próxima imagem"
-            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors"
+            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
           </button>
 
-          {/* Image container — touch-pinch-zoom enabled */}
+          {/* Image container — magnifier zoom on hover (desktop) + native pinch-zoom (mobile) */}
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative max-w-[92vw] max-h-[88vh] overflow-auto touch-pinch-zoom"
-            style={{ touchAction: "pinch-zoom" }}
+            onMouseMove={handleZoomMove}
+            onMouseEnter={() => setZoom(true)}
+            onMouseLeave={() => setZoom(false)}
+            className={`relative max-w-[92vw] max-h-[88vh] overflow-hidden touch-pinch-zoom transition-all duration-300 ease-out ${
+              isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            }`}
+            style={{
+              touchAction: "pinch-zoom",
+              cursor: zoom
+                ? "zoom-out"
+                : "zoom-in",
+            }}
           >
             <img
               src={results[lightboxIndex].image}
               alt={results[lightboxIndex].title}
-              className="block max-w-[92vw] max-h-[88vh] w-auto h-auto object-contain select-none"
+              className="block max-w-[92vw] max-h-[88vh] w-auto h-auto object-contain select-none transition-transform duration-500 ease-out will-change-transform"
               draggable={false}
+              style={{
+                transform: zoom ? "scale(2)" : "scale(1)",
+                transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+              }}
             />
           </div>
 
-          {/* Caption */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-white px-6">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-bronze mb-1">
-              {results[lightboxIndex].label}
-            </p>
-            <p className="font-heading text-lg">{results[lightboxIndex].title}</p>
-            <p className="text-xs text-white/60 mt-1">
-              {lightboxIndex + 1} / {results.length}
-            </p>
+          {/* Counter only (no case name caption) */}
+          <div
+            className={`absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-xs tracking-[0.3em] uppercase transition-opacity duration-300 ${
+              isOpen ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {lightboxIndex + 1} / {results.length}
           </div>
         </div>
       )}
