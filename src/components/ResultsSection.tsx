@@ -28,6 +28,14 @@ const ResultsSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 38 });
   const [selected, setSelected] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [isOpen, setIsOpen] = useState(false); // controls enter/exit animation
+  const [zoom, setZoom] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+
+  const triggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -37,31 +45,92 @@ const ResultsSection = () => {
     return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
 
-  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
-  const prevLightbox = useCallback(
-    () => setLightboxIndex((i) => (i === null ? i : (i - 1 + results.length) % results.length)),
-    []
-  );
-  const nextLightbox = useCallback(
-    () => setLightboxIndex((i) => (i === null ? i : (i + 1) % results.length)),
-    []
-  );
+  const openLightbox = useCallback((i: number) => {
+    lastTriggerRef.current = (document.activeElement as HTMLElement) ?? triggerRefs.current[i] ?? null;
+    setLightboxIndex(i);
+    setZoom(false);
+    // next frame -> trigger enter transition
+    requestAnimationFrame(() => setIsOpen(true));
+  }, []);
 
+  const closeLightbox = useCallback(() => {
+    setIsOpen(false);
+    // wait for exit animation before unmounting
+    window.setTimeout(() => {
+      setLightboxIndex(null);
+      setZoom(false);
+      // restore focus to the element that opened the modal
+      const el = lastTriggerRef.current;
+      if (el && typeof el.focus === "function") el.focus();
+    }, 260);
+  }, []);
+
+  const prevLightbox = useCallback(() => {
+    setZoom(false);
+    setLightboxIndex((i) => (i === null ? i : (i - 1 + results.length) % results.length));
+  }, []);
+  const nextLightbox = useCallback(() => {
+    setZoom(false);
+    setLightboxIndex((i) => (i === null ? i : (i + 1) % results.length));
+  }, []);
+
+  // Keyboard handling + focus trap + scroll lock
   useEffect(() => {
     if (lightboxIndex === null) return;
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") prevLightbox();
-      if (e.key === "ArrowRight") nextLightbox();
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeLightbox();
+        return;
+      }
+      if (e.key === "ArrowLeft") { e.preventDefault(); prevLightbox(); return; }
+      if (e.key === "ArrowRight") { e.preventDefault(); nextLightbox(); return; }
+      if (e.key === "Tab") {
+        // Focus trap inside dialog
+        const root = dialogRef.current;
+        if (!root) return;
+        const focusables = root.querySelectorAll<HTMLElement>(
+          'button, [href], [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement as HTMLElement | null;
+        if (e.shiftKey && active === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
+
     window.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    // Move focus into the modal once mounted
+    const focusTimer = window.setTimeout(() => {
+      closeBtnRef.current?.focus();
+    }, 50);
+
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      window.clearTimeout(focusTimer);
     };
   }, [lightboxIndex, closeLightbox, prevLightbox, nextLightbox]);
+
+  const handleZoomMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (!zoom) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomOrigin({ x, y });
+  };
+
 
   return (
     <section id="resultados" className="py-24 md:py-32 bg-background">
