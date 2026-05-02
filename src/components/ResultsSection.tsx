@@ -209,6 +209,10 @@ const ResultsSection = () => {
                         src={r.image}
                         alt={r.title}
                         loading="lazy"
+                        decoding="async"
+                        width="800"
+                        height="920"
+                        sizes="(min-width: 1024px) 33vw, (min-width: 768px) 45vw, 85vw"
                         className="w-full h-[460px] object-cover transition-transform duration-700 group-hover:scale-105 group-hover:brightness-105"
                       />
                     </button>
