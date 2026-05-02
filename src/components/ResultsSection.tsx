@@ -31,6 +31,9 @@ const ResultsSection = () => {
   const [isOpen, setIsOpen] = useState(false); // controls enter/exit animation
   const [zoom, setZoom] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const touchActiveTouches = useRef<number>(0);
 
   const triggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const lastTriggerRef = useRef<HTMLElement | null>(null);
