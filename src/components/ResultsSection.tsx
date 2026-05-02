@@ -31,6 +31,9 @@ const ResultsSection = () => {
   const [isOpen, setIsOpen] = useState(false); // controls enter/exit animation
   const [zoom, setZoom] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const touchActiveTouches = useRef<number>(0);
 
   const triggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const lastTriggerRef = useRef<HTMLElement | null>(null);
@@ -131,6 +134,31 @@ const ResultsSection = () => {
     setZoomOrigin({ x, y });
   };
 
+  // Swipe handlers (mobile) — ignore multi-touch (pinch-zoom)
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchActiveTouches.current = e.touches.length;
+    if (e.touches.length !== 1) {
+      touchStartX.current = null;
+      touchStartY.current = null;
+      return;
+    }
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    if (touchActiveTouches.current > 1) { touchStartX.current = null; return; }
+    const endTouch = e.changedTouches[0];
+    const dx = endTouch.clientX - touchStartX.current;
+    const dy = endTouch.clientY - touchStartY.current;
+    touchStartX.current = null;
+    touchStartY.current = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) nextLightbox(); else prevLightbox();
+    }
+  };
+
 
   return (
     <section id="resultados" className="py-24 md:py-32 bg-background">
@@ -181,6 +209,10 @@ const ResultsSection = () => {
                         src={r.image}
                         alt={r.title}
                         loading="lazy"
+                        decoding="async"
+                        width="800"
+                        height="920"
+                        sizes="(min-width: 1024px) 33vw, (min-width: 768px) 45vw, 85vw"
                         className="w-full h-[460px] object-cover transition-transform duration-700 group-hover:scale-105 group-hover:brightness-105"
                       />
                     </button>
@@ -262,6 +294,8 @@ const ResultsSection = () => {
             onMouseMove={handleZoomMove}
             onMouseEnter={() => setZoom(true)}
             onMouseLeave={() => setZoom(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             className={`relative max-w-[92vw] max-h-[88vh] overflow-hidden touch-pinch-zoom transition-all duration-300 ease-out ${
               isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
             }`}
@@ -273,8 +307,13 @@ const ResultsSection = () => {
             }}
           >
             <img
+              key={lightboxIndex}
               src={results[lightboxIndex].image}
               alt={results[lightboxIndex].title}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              sizes="92vw"
               className="block max-w-[92vw] max-h-[88vh] w-auto h-auto object-contain select-none transition-transform duration-500 ease-out will-change-transform"
               draggable={false}
               style={{
@@ -282,6 +321,9 @@ const ResultsSection = () => {
                 transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
               }}
             />
+            {/* Preload neighbors for instant swipe nav */}
+            <link rel="preload" as="image" href={results[(lightboxIndex + 1) % results.length].image} />
+            <link rel="preload" as="image" href={results[(lightboxIndex - 1 + results.length) % results.length].image} />
           </div>
 
           {/* Counter only (no case name caption) */}
