@@ -31,9 +31,6 @@ const ResultsSection = () => {
   const [isOpen, setIsOpen] = useState(false); // controls enter/exit animation
   const [zoom, setZoom] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
-  const touchStartX = useRef<number | null>(null);
-  const touchStartY = useRef<number | null>(null);
-  const touchActiveTouches = useRef<number>(0);
 
   const triggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const lastTriggerRef = useRef<HTMLElement | null>(null);
@@ -52,32 +49,20 @@ const ResultsSection = () => {
     lastTriggerRef.current = (document.activeElement as HTMLElement) ?? triggerRefs.current[i] ?? null;
     setLightboxIndex(i);
     setZoom(false);
-    // next frame -> trigger enter transition
     requestAnimationFrame(() => setIsOpen(true));
   }, []);
 
   const closeLightbox = useCallback(() => {
     setIsOpen(false);
-    // wait for exit animation before unmounting
     window.setTimeout(() => {
       setLightboxIndex(null);
       setZoom(false);
-      // restore focus to the element that opened the modal
       const el = lastTriggerRef.current;
       if (el && typeof el.focus === "function") el.focus();
     }, 260);
   }, []);
 
-  const prevLightbox = useCallback(() => {
-    setZoom(false);
-    setLightboxIndex((i) => (i === null ? i : (i - 1 + results.length) % results.length));
-  }, []);
-  const nextLightbox = useCallback(() => {
-    setZoom(false);
-    setLightboxIndex((i) => (i === null ? i : (i + 1) % results.length));
-  }, []);
-
-  // Keyboard handling + focus trap + scroll lock
+  // Keyboard handling (Esc only) + focus trap + scroll lock
   useEffect(() => {
     if (lightboxIndex === null) return;
 
@@ -87,10 +72,7 @@ const ResultsSection = () => {
         closeLightbox();
         return;
       }
-      if (e.key === "ArrowLeft") { e.preventDefault(); prevLightbox(); return; }
-      if (e.key === "ArrowRight") { e.preventDefault(); nextLightbox(); return; }
       if (e.key === "Tab") {
-        // Focus trap inside dialog
         const root = dialogRef.current;
         if (!root) return;
         const focusables = root.querySelectorAll<HTMLElement>(
@@ -114,7 +96,6 @@ const ResultsSection = () => {
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    // Move focus into the modal once mounted
     const focusTimer = window.setTimeout(() => {
       closeBtnRef.current?.focus();
     }, 50);
@@ -124,41 +105,25 @@ const ResultsSection = () => {
       document.body.style.overflow = prevOverflow;
       window.clearTimeout(focusTimer);
     };
-  }, [lightboxIndex, closeLightbox, prevLightbox, nextLightbox]);
+  }, [lightboxIndex, closeLightbox]);
 
-  const handleZoomMove = (e: ReactMouseEvent<HTMLDivElement>) => {
-    if (!zoom) return;
+  const updateOrigin = (e: ReactMouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     setZoomOrigin({ x, y });
   };
 
-  // Swipe handlers (mobile) — ignore multi-touch (pinch-zoom)
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    touchActiveTouches.current = e.touches.length;
-    if (e.touches.length !== 1) {
-      touchStartX.current = null;
-      touchStartY.current = null;
-      return;
-    }
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
+  const handleImageClick = (e: ReactMouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    updateOrigin(e);
+    setZoom((z) => !z);
   };
 
-  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (touchStartX.current === null || touchStartY.current === null) return;
-    if (touchActiveTouches.current > 1) { touchStartX.current = null; return; }
-    const endTouch = e.changedTouches[0];
-    const dx = endTouch.clientX - touchStartX.current;
-    const dy = endTouch.clientY - touchStartY.current;
-    touchStartX.current = null;
-    touchStartY.current = null;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) nextLightbox(); else prevLightbox();
-    }
+  const handleImageMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (!zoom) return;
+    updateOrigin(e);
   };
-
 
   return (
     <section id="resultados" className="py-24 md:py-32 bg-background">
@@ -245,7 +210,7 @@ const ResultsSection = () => {
         </ScrollReveal>
       </div>
 
-      {/* Lightbox / Modal */}
+      {/* Lightbox / Modal — single image, click to zoom */}
       {lightboxIndex !== null && (
         <div
           ref={dialogRef}
@@ -268,46 +233,20 @@ const ResultsSection = () => {
             <X className="w-5 h-5" strokeWidth={1.5} />
           </button>
 
-          {/* Prev */}
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); prevLightbox(); }}
-            aria-label="Imagem anterior"
-            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-          >
-            <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
-          </button>
-
-          {/* Next */}
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); nextLightbox(); }}
-            aria-label="Próxima imagem"
-            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-white/90 hover:text-white border border-white/30 hover:border-white/70 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-          >
-            <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
-          </button>
-
-          {/* Image container — magnifier zoom on hover (desktop) + native pinch-zoom (mobile) */}
+          {/* Image container — click toggles zoom; native pinch-zoom on mobile */}
           <div
-            onClick={(e) => e.stopPropagation()}
-            onMouseMove={handleZoomMove}
-            onMouseEnter={() => setZoom(true)}
+            onClick={handleImageClick}
+            onMouseMove={handleImageMove}
             onMouseLeave={() => setZoom(false)}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
             className={`relative max-w-[92vw] max-h-[88vh] overflow-hidden touch-pinch-zoom transition-all duration-300 ease-out ${
               isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
             }`}
             style={{
               touchAction: "pinch-zoom",
-              cursor: zoom
-                ? "zoom-out"
-                : "zoom-in",
+              cursor: zoom ? "zoom-out" : "zoom-in",
             }}
           >
             <img
-              key={lightboxIndex}
               src={results[lightboxIndex].image}
               alt={results[lightboxIndex].title}
               loading="eager"
@@ -321,18 +260,6 @@ const ResultsSection = () => {
                 transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
               }}
             />
-            {/* Preload neighbors for instant swipe nav */}
-            <link rel="preload" as="image" href={results[(lightboxIndex + 1) % results.length].image} />
-            <link rel="preload" as="image" href={results[(lightboxIndex - 1 + results.length) % results.length].image} />
-          </div>
-
-          {/* Counter only (no case name caption) */}
-          <div
-            className={`absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-xs tracking-[0.3em] uppercase transition-opacity duration-300 ${
-              isOpen ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {lightboxIndex + 1} / {results.length}
           </div>
         </div>
       )}
