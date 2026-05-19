@@ -80,13 +80,13 @@ const ServicesSection = () => {
         <ScrollReveal delay={300}>
           <div className="text-center mt-16">
             <a
-              href={whatsappUrl("Olá! Quero agendar minha Avaliação de Arquitetura Facial.")}
+              href={whatsappUrl("Olá, vim pelo site e quero saber mais sobre os tratamentos.")}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("cta_click", { location: "services", label: "Quero Agendar Minha Avaliação", channel: "whatsapp" })}
+              onClick={() => track("cta_click", { location: "services", label: "Saiba mais sobre os tratamentos", channel: "whatsapp" })}
               className="btn-primary-ink"
             >
-              Quero Agendar Minha Avaliação de Arquitetura Facial
+              Saiba mais sobre os tratamentos
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>
