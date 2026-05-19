@@ -102,7 +102,7 @@ const HeroSection = () => {
               className="btn-outline-ink !py-3 !px-8"
               onClick={() => track("cta_click", { location: "hero", label: "Mentorias", channel: "navigate" })}
             >
-              Sou profissional — quero a mentoria
+              Ver as mentorias
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>
