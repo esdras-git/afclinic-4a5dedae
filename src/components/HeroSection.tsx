@@ -96,6 +96,16 @@ const HeroSection = () => {
               Ver Tratamentos
             </a>
           </div>
+          <div className="mt-6 animate-fade-up-delay-3">
+            <a
+              href="#mentoria"
+              className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-bronze hover:text-foreground transition-colors"
+              onClick={() => track("cta_click", { location: "hero", label: "Mentorias", channel: "navigate" })}
+            >
+              Sou profissional — quero a mentoria
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </div>
     </section>
