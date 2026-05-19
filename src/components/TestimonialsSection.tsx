@@ -147,7 +147,7 @@ const TestimonialsSection = () => {
               Pronta para começar a sua história?
             </p>
             <a
-              href={whatsappUrl("Olá! Vim pelo site e gostaria de agendar minha avaliação.")}
+              href={whatsappUrl("Olá vim pelo site e quero uma avaliação com o método da Dra. Emanuele Melo.")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary-ink"

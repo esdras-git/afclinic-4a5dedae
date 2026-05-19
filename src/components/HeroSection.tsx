@@ -79,11 +79,11 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up-delay-3">
             <a
-              href={whatsappUrl("Olá! Vim pelo site e gostaria de agendar minha avaliação de Arquitetura Facial.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary-ink"
-              onClick={() => track("cta_click", { location: "hero", label: "Agendar Avaliação", channel: "whatsapp" })}
+            href={whatsappUrl("Olá, vim pelo site e quero agendar uma avaliação.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary-ink"
+            onClick={() => track("cta_click", { location: "hero", label: "Agendar Avaliação", channel: "whatsapp" })}
             >
               Agendar Avaliação
               <ArrowRight className="w-4 h-4" />
