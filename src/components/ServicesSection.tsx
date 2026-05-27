@@ -1,94 +1,170 @@
-import {
-  Droplet,
-  Sparkles,
-  Syringe,
-  Activity,
-  Layers,
-  Ear,
-  Smile,
-  Aperture,
-  Cpu,
-  ArrowRight,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import { whatsappUrl } from "@/lib/contact";
+import { WHATSAPP_NUMBER } from "@/lib/contact";
 import { track } from "@/lib/analytics";
-import imgLimpeza from "@/assets/svc-limpeza.webp";
-import imgHydra from "@/assets/svc-hydragloss.webp";
-import imgMicro from "@/assets/svc-microagulhamento.webp";
-import imgBotox from "@/assets/svc-botox.webp";
-import imgBio from "@/assets/svc-bioestimulador.webp";
-import imgOto from "@/assets/svc-otomodelacao.webp";
-import imgPreench from "@/assets/svc-preenchimento.webp";
-import imgPerfilo from "@/assets/svc-perfiloplastia.webp";
+import imgLimpeza from "@/assets/case-limpeza.jpg";
+import imgHydra from "@/assets/case-hydragloss.jpg";
+import imgMicro from "@/assets/case-microagulhamento.jpg";
+import imgBotox from "@/assets/case-botox.jpg";
+import imgBio from "@/assets/case-bioestimulador.jpg";
+import imgOto from "@/assets/case-otomodelacao.jpg";
+import imgPreench from "@/assets/case-preenchimento.jpg";
+import imgPerfil from "@/assets/case-perfiloplastia.jpg";
 import imgTec from "@/assets/svc-tecnologias.webp";
 
-const services = [
-  { icon: Droplet, name: "Limpeza de Pele", image: imgLimpeza },
-  { icon: Sparkles, name: "Hydragloss", image: imgHydra },
-  { icon: Activity, name: "Microagulhamento", image: imgMicro },
-  { icon: Syringe, name: "Botox", image: imgBotox },
-  { icon: Layers, name: "Bioestimulador de Colágeno", image: imgBio },
-  { icon: Ear, name: "Otomodelação", image: imgOto },
-  { icon: Smile, name: "Preenchimentos Faciais", image: imgPreench },
-  { icon: Aperture, name: "Perfiloplastia", image: imgPerfilo },
-  { icon: Cpu, name: "Tecnologias", image: imgTec },
+const treatments = [
+  { image: imgLimpeza, label: "Limpeza de Pele", title: "Pele Renovada", desc: "Higienização profunda que devolve viço, maciez e luminosidade à pele." },
+  { image: imgHydra, label: "Hydragloss", title: "Brilho & Hidratação", desc: "Tratamento de hidratação intensa para um efeito glow natural e duradouro." },
+  { image: imgMicro, label: "Microagulhamento", title: "Textura Refinada", desc: "Estímulo de colágeno que suaviza marcas, poros e melhora a qualidade da pele." },
+  { image: imgBotox, label: "Botox", title: "Expressão Suave", desc: "Atenuação de linhas dinâmicas preservando a naturalidade dos traços." },
+  { image: imgBio, label: "Bioestimulador de Colágeno", title: "Firmeza & Sustentação", desc: "Reposição de colágeno para devolver densidade e suporte ao rosto." },
+  { image: imgOto, label: "Otomodelação", title: "Harmonia das Orelhas", desc: "Reposicionamento sutil para equilibrar proporção e contorno facial." },
+  { image: imgPreench, label: "Preenchimentos Faciais", title: "Volume Estratégico", desc: "Restauração de volumes perdidos com naturalidade e proporção áurea." },
+  { image: imgPerfil, label: "Perfiloplastia", title: "Perfil Equilibrado", desc: "Refinamento de mento, nariz e mandíbula para um perfil em harmonia." },
+  { image: imgTec, label: "Tecnologias", title: "Alta Performance", desc: "Protocolos com tecnologia avançada para resultados precisos e duradouros." },
 ];
 
+const buildWhats = (treatment: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Olá, vim pelo site e quero agendar ${treatment}!`)}`;
+
 const ServicesSection = () => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 38 });
+  const [selected, setSelected] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setSelected(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+    onSelect();
+    return () => { emblaApi.off("select", onSelect); };
+  }, [emblaApi]);
+
   return (
     <section id="servicos" className="py-24 md:py-32 bg-cream-deep">
       <div className="container mx-auto px-6">
         <ScrollReveal>
-          <div className="text-center mb-20 max-w-2xl mx-auto">
-            <span className="eyebrow">Tratamentos</span>
-            <h2 className="font-heading text-4xl md:text-5xl mt-5 mb-6 leading-tight">
-              Cada procedimento, <em className="italic bronze-text font-normal">um traço</em> da sua arquitetura.
-            </h2>
-            <div className="bronze-divider mx-auto" />
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+            <div className="max-w-xl">
+              <span className="eyebrow">Tratamentos</span>
+              <h2 className="font-heading text-4xl md:text-5xl mt-5 leading-tight">
+                Cada procedimento, <em className="italic bronze-text font-normal">um traço</em> da sua arquitetura.
+              </h2>
+              <div className="bronze-divider mt-6" />
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => emblaApi?.scrollPrev()}
+                aria-label="Anterior"
+                className="w-12 h-12 border border-foreground/30 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
+              </button>
+              <button
+                onClick={() => emblaApi?.scrollNext()}
+                aria-label="Próximo"
+                className="w-12 h-12 border border-foreground/30 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
+              >
+                <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
+              </button>
+            </div>
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border">
-          {services.map((s, i) => (
-            <ScrollReveal key={s.name} delay={i * 60}>
-              <div className="group bg-background h-full flex flex-col cursor-default overflow-hidden">
-                <div className="relative overflow-hidden aspect-[4/3]">
-                  <img
-                    src={s.image}
-                    alt={s.name}
-                    loading="lazy"
-                    width={800}
-                    height={600}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-                <div className="p-8 md:p-10 flex flex-col items-start gap-5">
-                  <div className="w-12 h-12 flex items-center justify-center border border-foreground/15 group-hover:border-bronze group-hover:bg-bronze/5 transition-all">
-                    <s.icon className="w-5 h-5 text-foreground group-hover:text-bronze transition-colors" strokeWidth={1.4} />
-                  </div>
-                  <h3 className="font-heading text-lg md:text-xl text-foreground leading-snug">
-                    {s.name}
-                  </h3>
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
+        <ScrollReveal delay={150}>
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {treatments.map((t, i) => {
+                const isActive = activeIndex === i;
+                return (
+                  <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33%] min-w-0 pr-6">
+                    <article className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-shadow duration-500 border border-border/40">
+                      <button
+                        type="button"
+                        onClick={() => setActiveIndex(isActive ? null : i)}
+                        aria-expanded={isActive}
+                        aria-label={isActive ? `Fechar ${t.title}` : `Ver detalhes de ${t.title}`}
+                        className="relative block w-full h-[460px] overflow-hidden bg-cream-deep cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze text-left"
+                      >
+                        <img
+                          src={t.image}
+                          alt={t.title}
+                          loading="lazy"
+                          decoding="async"
+                          width="800"
+                          height="920"
+                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 45vw, 85vw"
+                          className={`w-full h-full object-cover transition-all duration-700 ${
+                            isActive ? "scale-105 blur-[2px]" : "group-hover:scale-105 group-hover:brightness-105"
+                          }`}
+                        />
 
-        <ScrollReveal delay={300}>
-          <div className="text-center mt-16">
-            <a
-              href={whatsappUrl("Olá, vim pelo site e quero saber mais sobre os tratamentos.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => track("cta_click", { location: "services", label: "Saiba mais sobre os tratamentos", channel: "whatsapp" })}
-              className="btn-primary-ink"
-            >
-              Saiba mais sobre os tratamentos
-              <ArrowRight className="w-4 h-4" />
-            </a>
+                        {/* Overlay with description + CTA */}
+                        <div
+                          className={`absolute inset-0 flex flex-col justify-end p-6 md:p-8 bg-gradient-to-t from-foreground/95 via-foreground/85 to-foreground/40 transition-all duration-500 ease-out ${
+                            isActive ? "opacity-100" : "opacity-0 pointer-events-none"
+                          }`}
+                        >
+                          <div
+                            className={`transform transition-all duration-500 ease-out ${
+                              isActive ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                            }`}
+                          >
+                            <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
+                              {t.label}
+                            </p>
+                            <h3 className="font-heading text-2xl text-background mb-3 leading-snug">
+                              {t.title}
+                            </h3>
+                            <p className="text-sm text-background/85 leading-relaxed mb-6">
+                              {t.desc}
+                            </p>
+                            <a
+                              href={buildWhats(t.label)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                track("cta_click", { location: "services_card", label: t.label, channel: "whatsapp" });
+                              }}
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-bronze text-foreground text-sm font-medium tracking-wide hover:bg-bronze/90 transition-colors"
+                            >
+                              Agendar agora
+                              <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+                            </a>
+                          </div>
+                        </div>
+                      </button>
+                      <div className="p-6">
+                        <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
+                          {t.label}
+                        </p>
+                        <h3 className="font-heading text-xl text-foreground mb-2">{t.title}</h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {isActive ? "Toque novamente para fechar." : "Toque no card para ver detalhes."}
+                        </p>
+                      </div>
+                    </article>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Progress dots */}
+          <div className="flex justify-center gap-2 mt-10">
+            {treatments.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => emblaApi?.scrollTo(i)}
+                aria-label={`Ir para slide ${i + 1}`}
+                className={`h-px transition-all duration-500 ${
+                  selected === i ? "w-12 bg-foreground" : "w-6 bg-foreground/20"
+                }`}
+              />
+            ))}
           </div>
         </ScrollReveal>
       </div>
