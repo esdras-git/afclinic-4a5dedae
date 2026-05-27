@@ -5,7 +5,6 @@ import HeroSection from "@/components/HeroSection";
 // Defer below-the-fold sections to shrink initial JS bundle
 const ServicesSection = lazy(() => import("@/components/ServicesSection"));
 const AboutSection = lazy(() => import("@/components/AboutSection"));
-const ResultsSection = lazy(() => import("@/components/ResultsSection"));
 const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const MentorshipSection = lazy(() => import("@/components/MentorshipSection"));
 const Footer = lazy(() => import("@/components/Footer"));
@@ -19,7 +18,6 @@ const Index = () => {
       <Suspense fallback={null}>
         <ServicesSection />
         <AboutSection />
-        <ResultsSection />
         <TestimonialsSection />
         <MentorshipSection />
         <Footer />
