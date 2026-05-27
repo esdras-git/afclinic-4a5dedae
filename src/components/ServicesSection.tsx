@@ -237,11 +237,9 @@ const ServicesSection = () => {
           >
             <X className="w-6 h-6" strokeWidth={1.5} />
           </button>
-          <img
+          <ZoomableImage
             src={treatments[zoomIndex].image}
             alt={treatments[zoomIndex].title}
-            onClick={(e) => e.stopPropagation()}
-            className="max-w-full max-h-full object-contain cursor-zoom-out animate-scale-in"
           />
         </div>
       )}
