@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, X } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import { WHATSAPP_NUMBER } from "@/lib/contact";
 import { track } from "@/lib/analytics";
@@ -29,10 +29,14 @@ const treatments = [
 const buildWhats = (treatment: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Olá, vim pelo site e quero agendar ${treatment}!`)}`;
 
+const isMobileViewport = () =>
+  typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+
 const ServicesSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start", duration: 38 });
   const [selected, setSelected] = useState(0);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [zoomIndex, setZoomIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -41,6 +45,32 @@ const ServicesSection = () => {
     onSelect();
     return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
+
+  useEffect(() => {
+    if (zoomIndex === null) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setZoomIndex(null); };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [zoomIndex]);
+
+  const handleImageClick = (i: number, label: string) => {
+    if (isMobileViewport()) {
+      setZoomIndex(i);
+      track("image_zoom", { location: "services_card", label, source: "mobile_tap" });
+    } else {
+      setZoomIndex(i);
+      track("image_zoom", { location: "services_card", label, source: "desktop_click" });
+    }
+  };
+
+  const handleCardToggle = (i: number) => {
+    setActiveIndex(activeIndex === i ? null : i);
+  };
 
   return (
     <section id="servicos" className="py-24 md:py-32 bg-cream-deep">
@@ -80,32 +110,53 @@ const ServicesSection = () => {
                 const isActive = activeIndex === i;
                 return (
                   <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33%] min-w-0 pr-6">
-                    <article className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-shadow duration-500 border border-border/40">
-                      <button
-                        type="button"
-                        onClick={() => setActiveIndex(isActive ? null : i)}
-                        aria-expanded={isActive}
-                        aria-label={isActive ? `Fechar ${t.title}` : `Ver detalhes de ${t.title}`}
-                        className="relative block w-full h-[460px] overflow-hidden bg-cream-deep cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze text-left"
-                      >
-                        <img
-                          src={t.image}
-                          alt={t.title}
-                          loading="lazy"
-                          decoding="async"
-                          width="800"
-                          height="920"
-                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 45vw, 85vw"
-                          className={`w-full h-full object-cover transition-all duration-700 ${
-                            isActive ? "scale-105 blur-[2px]" : "group-hover:scale-105 group-hover:brightness-105"
-                          }`}
-                        />
+                    <article
+                      onClick={() => handleCardToggle(i)}
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isActive}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleCardToggle(i);
+                        }
+                      }}
+                      className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-shadow duration-500 border border-border/40 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze"
+                    >
+                      <div className="relative block w-full h-[460px] overflow-hidden bg-cream-deep">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleImageClick(i, t.label);
+                          }}
+                          aria-label={`Ampliar imagem de ${t.title}`}
+                          className="absolute inset-0 w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze"
+                        >
+                          <img
+                            src={t.image}
+                            alt={t.title}
+                            loading="lazy"
+                            decoding="async"
+                            width="800"
+                            height="920"
+                            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 45vw, 85vw"
+                            className={`w-full h-full object-cover transition-all duration-700 ${
+                              isActive ? "scale-105 blur-[2px]" : "group-hover:scale-105 group-hover:brightness-105"
+                            }`}
+                          />
+                        </button>
 
-                        {/* Overlay with description + CTA */}
+                        {/* Overlay with description + CTA — opens via card click, sits above image */}
                         <div
                           className={`absolute inset-0 flex flex-col justify-end p-6 md:p-8 bg-gradient-to-t from-foreground/95 via-foreground/85 to-foreground/40 transition-all duration-500 ease-out ${
                             isActive ? "opacity-100" : "opacity-0 pointer-events-none"
                           }`}
+                          onClick={(e) => {
+                            // clicking the overlay (not CTA) closes it
+                            e.stopPropagation();
+                            setActiveIndex(null);
+                          }}
                         >
                           <div
                             className={`transform transition-all duration-500 ease-out ${
@@ -136,7 +187,7 @@ const ServicesSection = () => {
                             </a>
                           </div>
                         </div>
-                      </button>
+                      </div>
                       <div className="p-6">
                         <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
                           {t.label}
@@ -168,6 +219,32 @@ const ServicesSection = () => {
           </div>
         </ScrollReveal>
       </div>
+
+      {/* Zoom Lightbox */}
+      {zoomIndex !== null && (
+        <div
+          className="fixed inset-0 z-[100] bg-foreground/95 flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setZoomIndex(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Imagem ampliada — ${treatments[zoomIndex].title}`}
+        >
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setZoomIndex(null); }}
+            aria-label="Fechar"
+            className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center text-background hover:bg-background/10 transition-colors rounded-full"
+          >
+            <X className="w-6 h-6" strokeWidth={1.5} />
+          </button>
+          <img
+            src={treatments[zoomIndex].image}
+            alt={treatments[zoomIndex].title}
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-full object-contain cursor-zoom-out animate-scale-in"
+          />
+        </div>
+      )}
     </section>
   );
 };
