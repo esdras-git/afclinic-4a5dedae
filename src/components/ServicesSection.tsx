@@ -189,11 +189,11 @@ const ServicesSection = () => {
                         </div>
                       </div>
                       <div className="p-6">
-                        <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
+                        <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-3">
                           {t.label}
                         </p>
-                        <h3 className="font-heading text-xl text-foreground mb-2">{t.title}</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <h3 className="font-heading text-2xl md:text-3xl text-foreground mb-2 leading-tight">{t.title}</h3>
+                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
                           {isActive ? "Toque novamente para fechar." : "Toque no card para ver detalhes."}
                         </p>
                       </div>
