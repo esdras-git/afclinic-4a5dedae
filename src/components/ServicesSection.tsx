@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, ArrowRight, X } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import ZoomableImage from "./ZoomableImage";
 import { WHATSAPP_NUMBER } from "@/lib/contact";
 import { track } from "@/lib/analytics";
 import imgLimpeza from "@/assets/case-limpeza.jpg";
@@ -189,11 +190,11 @@ const ServicesSection = () => {
                         </div>
                       </div>
                       <div className="p-6">
-                        <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-2">
+                        <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-3">
                           {t.label}
                         </p>
-                        <h3 className="font-heading text-xl text-foreground mb-2">{t.title}</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <h3 className="font-heading text-2xl md:text-3xl text-foreground mb-2 leading-tight">{t.title}</h3>
+                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
                           {isActive ? "Toque novamente para fechar." : "Toque no card para ver detalhes."}
                         </p>
                       </div>
@@ -237,11 +238,9 @@ const ServicesSection = () => {
           >
             <X className="w-6 h-6" strokeWidth={1.5} />
           </button>
-          <img
+          <ZoomableImage
             src={treatments[zoomIndex].image}
             alt={treatments[zoomIndex].title}
-            onClick={(e) => e.stopPropagation()}
-            className="max-w-full max-h-full object-contain cursor-zoom-out animate-scale-in"
           />
         </div>
       )}
