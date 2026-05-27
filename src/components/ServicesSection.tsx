@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, ArrowRight, X } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import ZoomableImage from "./ZoomableImage";
 import { WHATSAPP_NUMBER } from "@/lib/contact";
 import { track } from "@/lib/analytics";
 import imgLimpeza from "@/assets/case-limpeza.jpg";
