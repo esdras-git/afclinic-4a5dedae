@@ -122,7 +122,7 @@ const ServicesSection = () => {
                           handleCardToggle(i);
                         }
                       }}
-                      className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-all duration-500 ease-out border border-border/40 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.985] active:translate-y-0"
+                      className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-all duration-500 ease-out border border-border/40 cursor-pointer outline-none focus:outline-none focus-visible:outline-none hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.985] active:translate-y-0"
                     >
                       <div className="relative block w-full h-[460px] overflow-hidden bg-cream-deep">
                         <button
@@ -132,7 +132,7 @@ const ServicesSection = () => {
                             handleImageClick(i, t.label);
                           }}
                           aria-label={`Ampliar imagem de ${t.title}`}
-                          className="absolute inset-0 w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze"
+                          className="absolute inset-0 w-full h-full cursor-zoom-in outline-none focus:outline-none focus-visible:outline-none"
                         >
                           <img
                             src={t.image}

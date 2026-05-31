@@ -5,9 +5,9 @@ import { whatsappUrl } from "@/lib/contact";
 import { track } from "@/lib/analytics";
 
 const navLinks = [
+  { label: "Início", href: "#" },
   { label: "Serviços", href: "#servicos" },
   { label: "Sobre", href: "#sobre" },
-  
   { label: "Contato", href: "#contato" },
 ];
 

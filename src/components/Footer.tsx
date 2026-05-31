@@ -1,36 +1,16 @@
-import { Instagram, MapPin, Mail, Phone } from "lucide-react";
-import reception from "@/assets/clinic-reception.jpg";
-import room from "@/assets/clinic-room.jpg";
-import detail from "@/assets/clinic-detail.jpg";
+import { Instagram, MapPin, Phone } from "lucide-react";
 import afLogo from "@/assets/af-logo.png";
-import { whatsappUrl, WHATSAPP_NUMBER } from "@/lib/contact";
 import { track } from "@/lib/analytics";
 
 const Footer = () => {
   return (
     <footer id="contato" className="bg-background border-t border-border">
-      {/* Galeria de fotos da clínica */}
-      <div className="container mx-auto px-6 py-20">
-        <div className="grid md:grid-cols-3 gap-1">
-          {[reception, room, detail].map((src, i) => (
-            <div key={i} className="overflow-hidden aspect-[4/3] bg-cream-deep group">
-              <img
-                src={src}
-                alt={`Ambiente da clínica ${i + 1}`}
-                loading="lazy"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Contato e info */}
-      <div className="border-t border-border">
-        <div className="container mx-auto px-6 py-16">
-          <div className="grid md:grid-cols-4 gap-12">
+      <div>
+        <div className="container mx-auto px-6 py-20">
+          <div className="grid md:grid-cols-4 gap-12 text-center md:text-left items-start justify-items-center md:justify-items-start">
             {/* Marca */}
-            <div className="md:col-span-1">
+            <div className="md:col-span-1 flex flex-col items-center md:items-start">
               <div className="flex items-center gap-3 mb-5">
                 <img src={afLogo} alt="" className="w-9 h-9 object-contain" />
                 <div className="leading-tight">
