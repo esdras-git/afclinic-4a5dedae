@@ -189,15 +189,19 @@ const ServicesSection = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="p-6">
-                        <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-3">
-                          {t.label}
-                        </p>
-                        <h3 className="font-heading text-2xl md:text-3xl text-foreground mb-2 leading-tight">{t.title}</h3>
-                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
-                          {isActive ? "Toque novamente para fechar." : "Toque no card para ver detalhes."}
-                        </p>
+                      <div className="p-6 flex items-center justify-between gap-4">
+                        <h3 className="font-heading text-2xl md:text-3xl text-foreground leading-tight">{t.title}</h3>
+                        <span
+                          className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 border text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                            isActive
+                              ? "bg-foreground text-background border-foreground"
+                              : "bg-bronze/10 text-bronze border-bronze/40 group-hover:bg-bronze group-hover:text-foreground group-hover:border-bronze"
+                          }`}
+                        >
+                          {isActive ? "Fechar" : "Ver detalhes"}
+                        </span>
                       </div>
+
                     </article>
                   </div>
                 );
