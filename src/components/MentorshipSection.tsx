@@ -83,7 +83,7 @@ const MentorshipSection = () => {
             </h2>
 
             <div
-              className="w-16 h-px my-8"
+              className="w-16 h-px my-8 mx-auto lg:mx-0"
               style={{ backgroundColor: "hsl(var(--bronze))" }}
             />
 
