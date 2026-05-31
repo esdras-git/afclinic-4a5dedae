@@ -238,10 +238,11 @@ const ServicesSection = () => {
             type="button"
             onClick={(e) => { e.stopPropagation(); setZoomIndex(null); }}
             aria-label="Fechar"
-            className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center text-background hover:bg-background/10 transition-colors rounded-full"
+            className="absolute top-6 right-6 z-[110] w-12 h-12 flex items-center justify-center text-background bg-foreground/60 hover:bg-foreground/80 transition-colors rounded-full"
           >
             <X className="w-6 h-6" strokeWidth={1.5} />
           </button>
+
           <ZoomableImage
             src={treatments[zoomIndex].image}
             alt={treatments[zoomIndex].title}
