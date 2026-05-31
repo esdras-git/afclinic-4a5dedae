@@ -8,23 +8,42 @@ interface Props {
 
 const MIN = 1;
 const MAX = 5;
+const STEP = 0.5;
 
 const ZoomableImage = ({ src, alt }: Props) => {
   const [scale, setScale] = useState(1);
-  const [tx, setTx] = useState(0);
-  const [ty, setTy] = useState(0);
+  const [, force] = useState(0);
+  const tx = useRef(0);
+  const ty = useRef(0);
+  const [isInteracting, setIsInteracting] = useState(false);
+
   const dragging = useRef(false);
+  const moved = useRef(false);
   const last = useRef({ x: 0, y: 0 });
   const pinch = useRef<{ dist: number; scale: number } | null>(null);
+  const rafId = useRef<number | null>(null);
 
   const clamp = (s: number) => Math.min(MAX, Math.max(MIN, s));
 
-  const reset = () => { setScale(1); setTx(0); setTy(0); };
+  const scheduleRender = () => {
+    if (rafId.current != null) return;
+    rafId.current = requestAnimationFrame(() => {
+      rafId.current = null;
+      force((n) => n + 1);
+    });
+  };
+
+  const reset = () => {
+    tx.current = 0;
+    ty.current = 0;
+    setScale(1);
+    scheduleRender();
+  };
 
   const zoomBy = (delta: number) => {
     setScale((s) => {
       const next = clamp(s + delta);
-      if (next === 1) { setTx(0); setTy(0); }
+      if (next === 1) { tx.current = 0; ty.current = 0; }
       return next;
     });
   };
@@ -32,6 +51,12 @@ const ZoomableImage = ({ src, alt }: Props) => {
   const onWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     zoomBy(e.deltaY > 0 ? -0.2 : 0.2);
+  };
+
+  const onImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (moved.current) { moved.current = false; return; }
+    zoomBy(STEP);
   };
 
   const onDoubleClick = (e: React.MouseEvent) => {
@@ -42,16 +67,27 @@ const ZoomableImage = ({ src, alt }: Props) => {
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (scale <= 1) return;
+    e.preventDefault();
     dragging.current = true;
+    moved.current = false;
+    setIsInteracting(true);
     last.current = { x: e.clientX, y: e.clientY };
   };
   const onMouseMove = (e: React.MouseEvent) => {
     if (!dragging.current) return;
-    setTx((v) => v + (e.clientX - last.current.x));
-    setTy((v) => v + (e.clientY - last.current.y));
+    const dx = e.clientX - last.current.x;
+    const dy = e.clientY - last.current.y;
+    if (Math.abs(dx) + Math.abs(dy) > 2) moved.current = true;
     last.current = { x: e.clientX, y: e.clientY };
+    tx.current += dx;
+    ty.current += dy;
+    scheduleRender();
   };
-  const stopDrag = () => { dragging.current = false; };
+  const stopDrag = () => {
+    if (!dragging.current) return;
+    dragging.current = false;
+    setIsInteracting(false);
+  };
 
   const dist = (a: React.Touch, b: React.Touch) =>
     Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
@@ -59,8 +95,11 @@ const ZoomableImage = ({ src, alt }: Props) => {
   const onTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
       pinch.current = { dist: dist(e.touches[0], e.touches[1]), scale };
+      setIsInteracting(true);
     } else if (e.touches.length === 1 && scale > 1) {
       dragging.current = true;
+      moved.current = false;
+      setIsInteracting(true);
       last.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     }
   };
@@ -70,18 +109,24 @@ const ZoomableImage = ({ src, alt }: Props) => {
       const d = dist(e.touches[0], e.touches[1]);
       setScale(clamp(pinch.current.scale * (d / pinch.current.dist)));
     } else if (e.touches.length === 1 && dragging.current) {
-      setTx((v) => v + (e.touches[0].clientX - last.current.x));
-      setTy((v) => v + (e.touches[0].clientY - last.current.y));
+      const dx = e.touches[0].clientX - last.current.x;
+      const dy = e.touches[0].clientY - last.current.y;
+      if (Math.abs(dx) + Math.abs(dy) > 2) moved.current = true;
       last.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      tx.current += dx;
+      ty.current += dy;
+      scheduleRender();
     }
   };
   const onTouchEnd = () => {
     pinch.current = null;
     dragging.current = false;
-    if (scale <= 1) { setTx(0); setTy(0); }
+    setIsInteracting(false);
+    if (scale <= 1) { tx.current = 0; ty.current = 0; scheduleRender(); }
   };
 
   useEffect(() => { reset(); }, [src]);
+  useEffect(() => () => { if (rafId.current) cancelAnimationFrame(rafId.current); }, []);
 
   return (
     <div
@@ -99,21 +144,22 @@ const ZoomableImage = ({ src, alt }: Props) => {
         src={src}
         alt={alt}
         draggable={false}
+        onClick={onImageClick}
         onDoubleClick={onDoubleClick}
         onMouseDown={onMouseDown}
         style={{
-          transform: `translate(${tx}px, ${ty}px) scale(${scale})`,
-          transition: dragging.current || pinch.current ? "none" : "transform 0.25s ease-out",
-          cursor: scale > 1 ? (dragging.current ? "grabbing" : "grab") : "zoom-in",
+          transform: `translate3d(${tx.current}px, ${ty.current}px, 0) scale(${scale})`,
+          transition: isInteracting ? "none" : "transform 0.2s ease-out",
+          cursor: scale > 1 ? (isInteracting ? "grabbing" : "grab") : "zoom-in",
+          willChange: "transform",
         }}
         className="max-w-full max-h-full object-contain select-none animate-scale-in"
       />
 
-      {/* Controls */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-foreground/70 backdrop-blur-sm rounded-full px-2 py-2">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[105] flex items-center gap-2 bg-foreground/70 backdrop-blur-sm rounded-full px-2 py-2">
         <button
           type="button"
-          onClick={(e) => { e.stopPropagation(); zoomBy(-0.5); }}
+          onClick={(e) => { e.stopPropagation(); zoomBy(-STEP); }}
           aria-label="Diminuir zoom"
           className="w-10 h-10 flex items-center justify-center text-background hover:bg-background/10 rounded-full transition-colors disabled:opacity-40"
           disabled={scale <= MIN}
@@ -125,7 +171,7 @@ const ZoomableImage = ({ src, alt }: Props) => {
         </span>
         <button
           type="button"
-          onClick={(e) => { e.stopPropagation(); zoomBy(0.5); }}
+          onClick={(e) => { e.stopPropagation(); zoomBy(STEP); }}
           aria-label="Aumentar zoom"
           className="w-10 h-10 flex items-center justify-center text-background hover:bg-background/10 rounded-full transition-colors disabled:opacity-40"
           disabled={scale >= MAX}
