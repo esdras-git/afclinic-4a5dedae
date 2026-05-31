@@ -122,7 +122,7 @@ const ServicesSection = () => {
                           handleCardToggle(i);
                         }
                       }}
-                      className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_24px_50px_-16px_rgba(0,0,0,0.28)] hover:-translate-y-1 active:scale-[0.985] transition-all duration-500 ease-out border border-border/40 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze"
+                      className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-shadow duration-500 border border-border/40 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze"
                     >
                       <div className="relative block w-full h-[460px] overflow-hidden bg-cream-deep">
                         <button
@@ -189,19 +189,15 @@ const ServicesSection = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="p-6 flex items-center justify-between gap-4">
-                        <h3 className="font-heading text-2xl md:text-3xl text-foreground leading-tight">{t.title}</h3>
-                        <span
-                          className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 border text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 ${
-                            isActive
-                              ? "bg-foreground text-background border-foreground"
-                              : "bg-bronze/10 text-bronze border-bronze/40 group-hover:bg-bronze group-hover:text-foreground group-hover:border-bronze"
-                          }`}
-                        >
-                          {isActive ? "Fechar" : "Ver detalhes"}
-                        </span>
+                      <div className="p-6">
+                        <p className="text-[10px] uppercase tracking-[0.3em] bronze-text mb-3">
+                          {t.label}
+                        </p>
+                        <h3 className="font-heading text-2xl md:text-3xl text-foreground mb-2 leading-tight">{t.title}</h3>
+                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                          {isActive ? "Toque novamente para fechar." : "Toque no card para ver detalhes."}
+                        </p>
                       </div>
-
                     </article>
                   </div>
                 );
@@ -238,11 +234,10 @@ const ServicesSection = () => {
             type="button"
             onClick={(e) => { e.stopPropagation(); setZoomIndex(null); }}
             aria-label="Fechar"
-            className="absolute top-6 right-6 z-[110] w-12 h-12 flex items-center justify-center text-background bg-foreground/60 hover:bg-foreground/80 transition-colors rounded-full"
+            className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center text-background hover:bg-background/10 transition-colors rounded-full"
           >
             <X className="w-6 h-6" strokeWidth={1.5} />
           </button>
-
           <ZoomableImage
             src={treatments[zoomIndex].image}
             alt={treatments[zoomIndex].title}
