@@ -63,7 +63,7 @@ const MentorshipSection = () => {
           </ScrollReveal>
 
           {/* Copy */}
-          <ScrollReveal className="lg:col-span-7 lg:pl-6">
+          <ScrollReveal className="lg:col-span-7 lg:pl-6 text-center lg:text-left flex flex-col items-center lg:items-start">
             <p
               className="text-[11px] uppercase tracking-[0.35em] mb-6"
               style={{ color: "hsl(var(--bronze))" }}
