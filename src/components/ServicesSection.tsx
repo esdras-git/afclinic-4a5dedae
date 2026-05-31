@@ -122,7 +122,7 @@ const ServicesSection = () => {
                           handleCardToggle(i);
                         }
                       }}
-                      className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-shadow duration-500 border border-border/40 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze"
+                      className="group bg-background rounded-sm overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.12)] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.22)] transition-all duration-500 ease-out border border-border/40 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.985] active:translate-y-0"
                     >
                       <div className="relative block w-full h-[460px] overflow-hidden bg-cream-deep">
                         <button
