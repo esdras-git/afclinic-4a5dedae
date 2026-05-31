@@ -12,8 +12,9 @@ const STEP = 0.5;
 
 const ZoomableImage = ({ src, alt }: Props) => {
   const [scale, setScale] = useState(1);
-  const [tx, setTx] = useState(0);
-  const [ty, setTy] = useState(0);
+  const [, force] = useState(0);
+  const tx = useRef(0);
+  const ty = useRef(0);
   const [isInteracting, setIsInteracting] = useState(false);
 
   const dragging = useRef(false);
@@ -21,34 +22,30 @@ const ZoomableImage = ({ src, alt }: Props) => {
   const last = useRef({ x: 0, y: 0 });
   const pinch = useRef<{ dist: number; scale: number } | null>(null);
   const rafId = useRef<number | null>(null);
-  const pending = useRef<{ tx: number; ty: number } | null>(null);
 
   const clamp = (s: number) => Math.min(MAX, Math.max(MIN, s));
 
-  const reset = () => { setScale(1); setTx(0); setTy(0); };
+  const scheduleRender = () => {
+    if (rafId.current != null) return;
+    rafId.current = requestAnimationFrame(() => {
+      rafId.current = null;
+      force((n) => n + 1);
+    });
+  };
+
+  const reset = () => {
+    tx.current = 0;
+    ty.current = 0;
+    setScale(1);
+    scheduleRender();
+  };
 
   const zoomBy = (delta: number) => {
     setScale((s) => {
       const next = clamp(s + delta);
-      if (next === 1) { setTx(0); setTy(0); }
+      if (next === 1) { tx.current = 0; ty.current = 0; }
       return next;
     });
-  };
-
-  const flushPan = () => {
-    rafId.current = null;
-    if (pending.current) {
-      setTx(pending.current.tx);
-      setTy(pending.current.ty);
-      pending.current = null;
-    }
-  };
-
-  const schedulePan = (nx: number, ny: number) => {
-    pending.current = { tx: nx, ty: ny };
-    if (rafId.current == null) {
-      rafId.current = requestAnimationFrame(flushPan);
-    }
   };
 
   const onWheel = (e: React.WheelEvent) => {
@@ -58,7 +55,6 @@ const ZoomableImage = ({ src, alt }: Props) => {
 
   const onImageClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Suppress click triggered after a drag pan
     if (moved.current) { moved.current = false; return; }
     zoomBy(STEP);
   };
@@ -83,7 +79,9 @@ const ZoomableImage = ({ src, alt }: Props) => {
     const dy = e.clientY - last.current.y;
     if (Math.abs(dx) + Math.abs(dy) > 2) moved.current = true;
     last.current = { x: e.clientX, y: e.clientY };
-    schedulePan(tx + (pending.current ? pending.current.tx - tx + dx : dx), ty + (pending.current ? pending.current.ty - ty + dy : dy));
+    tx.current += dx;
+    ty.current += dy;
+    scheduleRender();
   };
   const stopDrag = () => {
     if (!dragging.current) return;
@@ -115,14 +113,16 @@ const ZoomableImage = ({ src, alt }: Props) => {
       const dy = e.touches[0].clientY - last.current.y;
       if (Math.abs(dx) + Math.abs(dy) > 2) moved.current = true;
       last.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      schedulePan(tx + dx, ty + dy);
+      tx.current += dx;
+      ty.current += dy;
+      scheduleRender();
     }
   };
   const onTouchEnd = () => {
     pinch.current = null;
     dragging.current = false;
     setIsInteracting(false);
-    if (scale <= 1) { setTx(0); setTy(0); }
+    if (scale <= 1) { tx.current = 0; ty.current = 0; scheduleRender(); }
   };
 
   useEffect(() => { reset(); }, [src]);
@@ -148,7 +148,7 @@ const ZoomableImage = ({ src, alt }: Props) => {
         onDoubleClick={onDoubleClick}
         onMouseDown={onMouseDown}
         style={{
-          transform: `translate3d(${tx}px, ${ty}px, 0) scale(${scale})`,
+          transform: `translate3d(${tx.current}px, ${ty.current}px, 0) scale(${scale})`,
           transition: isInteracting ? "none" : "transform 0.2s ease-out",
           cursor: scale > 1 ? (isInteracting ? "grabbing" : "grab") : "zoom-in",
           willChange: "transform",
@@ -156,7 +156,6 @@ const ZoomableImage = ({ src, alt }: Props) => {
         className="max-w-full max-h-full object-contain select-none animate-scale-in"
       />
 
-      {/* Controls */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[105] flex items-center gap-2 bg-foreground/70 backdrop-blur-sm rounded-full px-2 py-2">
         <button
           type="button"
