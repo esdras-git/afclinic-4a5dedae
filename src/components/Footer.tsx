@@ -1,6 +1,7 @@
 import { Instagram, MapPin, Phone } from "lucide-react";
 import afLogo from "@/assets/af-logo.png";
 import { track } from "@/lib/analytics";
+import { whatsappUrl } from "@/lib/contact";
 
 const Footer = () => {
   return (
@@ -28,7 +29,7 @@ const Footer = () => {
               <p className="eyebrow mb-5">Contato</p>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li>
-                  <a href="https://wa.me/5585920001729" target="_blank" rel="noopener noreferrer" onClick={() => track("cta_click", { location: "footer", label: "WhatsApp", channel: "whatsapp" })} className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" onClick={() => track("cta_click", { location: "footer", label: "WhatsApp", channel: "whatsapp" })} className="flex items-center gap-3 hover:text-foreground transition-colors">
                     <Phone className="w-4 h-4" strokeWidth={1.5} />
                     +55 85 92000-1729
                   </a>

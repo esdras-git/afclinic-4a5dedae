@@ -3,7 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, ArrowRight, X } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import ZoomableImage from "./ZoomableImage";
-import { WHATSAPP_NUMBER } from "@/lib/contact";
+import { whatsappUrl } from "@/lib/contact";
 import { track } from "@/lib/analytics";
 import imgLimpeza from "@/assets/case-limpeza.jpg";
 import imgHydra from "@/assets/case-hydragloss.jpg";
@@ -28,7 +28,7 @@ const treatments = [
 ];
 
 const buildWhats = (treatment: string) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Olá, vim pelo site e quero agendar ${treatment}!`)}`;
+  whatsappUrl(`Olá, vim pelo site e quero agendar ${treatment}!`);
 
 const isMobileViewport = () =>
   typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
