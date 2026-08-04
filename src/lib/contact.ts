@@ -1,4 +1,4 @@
-export const REDIRECT_URL = "https://wa.me/message/26GHY4K6S7BWA1";
+export const REDIRECT_URL = "https://wa.me/5585920001729";
 export const WHATSAPP_DEFAULT_MESSAGE =
   "Olá! Vim pelo site e gostaria de agendar minha avaliação.";
 
