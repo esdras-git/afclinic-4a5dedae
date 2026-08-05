@@ -1,11 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import mentoriaImg from "@/assets/mentoria-dra.jpg";
-import { whatsappUrl } from "@/lib/contact";
+import { mentorshipUrl as buildMentorshipUrl } from "@/lib/contact";
 
-const MENTORSHIP_MESSAGE =
-  "Olá, Dra. Emanuele! Tenho interesse na Mentoria de Arquitetura Facial e gostaria de mais informações.";
-const mentorshipUrl = whatsappUrl(MENTORSHIP_MESSAGE);
+const mentorshipUrl = buildMentorshipUrl();
+
 
 const MentorshipSection = () => {
   return (
